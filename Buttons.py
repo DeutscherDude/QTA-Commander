@@ -11,6 +11,7 @@ class Butts(QWidget):
         # Copy Button setup
         self.copy_butt = QPushButton("F5 Copy")
         self.button_setup(self.copy_butt, app)
+        self.copy_butt.clicked(self.copy_file())
 
         # Move button setup
         self.move_butt = QPushButton("F6 Move")
@@ -43,7 +44,7 @@ class Butts(QWidget):
             open(dest_path, 'wb').write()
             return True
         except:
-            # Nie udało się skopiować pliku, pop-up
+            print("Argh, an error occurred")
             return False
 
     def delete_file(self, file_path) -> bool:

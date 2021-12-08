@@ -7,5 +7,5 @@ from MainWind import Window
 
 App = QApplication(sys.argv)
 App.setStyleSheet(open('style.qss').read())
-new_bitch = Window()
+inner_widgets = Window()
 sys.exit(App.exec())
