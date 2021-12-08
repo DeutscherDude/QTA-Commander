@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QPushButton, QHBoxLayout, QListWidgetItem, QListWidget, QWidget, QListView, \
     QAbstractItemView, QVBoxLayout, QMainWindow
-from PyQt6.QtCore import Qt, pyqtSlot
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QKeyEvent
 from pathlib import Path
 import os
@@ -15,7 +15,9 @@ PTH_R = Path('/Users/kolok')
 # TODO: OS stat - Podaje statystyki plików i folderów; os.path.isdir
 # TODO: Add: exists from os.path; is_dir, is_file       For operations on files & directories we use path
 # TODO: Change the code to PYSIDE6
-# TODO: Create a listener for keyboard presses on UP, DOWN arrows & Function Keys - subclass of QWidget
+# TODO: Add "Enter" & "Backspace" shortcuts :)
+# TODO: Ask for Admin permissions
+
 
 def get_initial_directory():
     pth = Path('/Users/kolok')
@@ -44,6 +46,7 @@ class Window(QWidget):
         self.delete_butt = QPushButton("F8 Delete")
 
         self.test = QListWidget()
+        self.test.addItem(QListWidgetItem(QIcon("Arrow_48x48"), "..."))
 
         items = get_initial_directory()
         self.test.setResizeMode(QListView.ResizeMode(1))
@@ -76,18 +79,19 @@ class Window(QWidget):
         self.setLayout(outerLayout)
         self.show()
 
-    def get_current_dir(self, file_name: str) -> list:
+    def get_current_dir(self, file_name="") -> list:
         global PTH_L
-        PTH_L = Path("{}/{}".format(PTH_L, file_name))
+        PTH_L = PTH_L.joinpath(file_name)
         all_files = []
+        all_files.append(QListWidgetItem(QIcon("Arrow_48x48"), "..."))
         for record in PTH_L.iterdir():
             if record.is_dir():
                 i_rec = QIcon("folder.png")
-                n_rec = QListWidgetItem(i_rec, record.name)
+                n_rec = QListWidgetItem(i_rec, record.stem)
                 all_files.append(n_rec)
             elif record.is_file():
                 i_rec = QIcon("file.png")
-                n_rec = QListWidgetItem(i_rec, record.name)
+                n_rec = QListWidgetItem(i_rec, record.stem)
                 all_files.append(n_rec)
         return all_files
 
@@ -125,9 +129,20 @@ class Window(QWidget):
             return False
 
     def on_double_click(self, item: QListWidgetItem):
-        print(f"beep boop, {item.text()}")
+        global PTH_L
         txt = item.text()
-        self.test.clear()
-        items = self.get_current_dir(txt)
+        # TODO: Figuring out the parent widget of the item?
+        if txt == "...":
+            self.test.clear()
+            nigerundajo = PTH_L.__str__()
+            # TODO: Getting the Windows base icons & maaaaybe introducing some of my own choosing
+            # TODO: Using root whilst hitting the end of the drive?
+            letters = len(nigerundajo)
+            test = PTH_L.parent
+            PTH_L = test
+            items = self.get_current_dir()
+        else:
+            self.test.clear()
+            items = self.get_current_dir(txt)
         for item in items:
             self.test.addItem(item)
