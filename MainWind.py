@@ -1,26 +1,26 @@
-from PyQt6.QtWidgets import QPushButton, QHBoxLayout, QListWidgetItem, QListWidget, QWidget, QListView, \
-    QAbstractItemView, QVBoxLayout, QMainWindow, QLayout
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QIcon, QKeyEvent
-from pathlib import Path
+import ctypes
 import os
+from pathlib import Path
+
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon, QKeyEvent
+from PySide6.QtWidgets import QPushButton, QHBoxLayout, QListWidgetItem, QListWidget, QWidget, QListView, \
+    QAbstractItemView, QVBoxLayout
 
 BUTTON_WIDTH = 100
 BUTTON_HEIGHT = 60
-PTH_L = Path('/Users')
+HOME = os.environ['USERPROFILE']
+PTH_L = Path(HOME)
 PTH_R = Path('/Users')
 
 
 # TODO: Selecting, copying, deleting, moving multiple files
 # TODO: OS stat - Podaje statystyki plików i folderów; os.path.isdir
-# TODO: Add: exists from os.path; is_dir, is_file       For operations on files & directories we use path
-# TODO: Change the code to PYSIDE6!!!
-# TODO: Add "Enter" & "Backspace" shortcuts :)
-# TODO: Ask for Admin permissions
 
 
 def get_initial_directory():
-    pth = Path('/Users')
+    global PTH_L
+    pth = PTH_L
     all_files = []
     for record in pth.iterdir():
         if record.is_dir():
@@ -37,6 +37,7 @@ def get_initial_directory():
 class Listings(QVBoxLayout):
     def __init__(self):
         super().__init__()
+        print(HOME)
         self.test = QListWidget()
         self.test.addItem(QListWidgetItem(QIcon("Arrow_48x48"), "..."))
         self.copy_butt = QPushButton("F5 Copy")
@@ -66,7 +67,6 @@ class Listings(QVBoxLayout):
         buttons_layout.addWidget(self.move_butt)
         buttons_layout.addWidget(self.fldr_butt)
         buttons_layout.addWidget(self.delete_butt)
-        # outerLayout = QVBoxLayout()
         topLayout = QHBoxLayout()
         topLayout.addWidget(self.test)
         topLayout.addWidget(self.test2)
@@ -78,13 +78,12 @@ class Listings(QVBoxLayout):
         txt = item.text()
         # TODO: Figuring out the parent widget of the item?
         if txt == "...":
-            self.test.clear()
-            nigerundajo = PTH_L.__str__()
-            # TODO: Getting the Windows base icons & maaaaybe introducing some of my own choosing
+            # TODO: Using the Windows base icons I extracted :^) & maaaaybe introducing some of my own choosing
             # TODO: Using root whilst hitting the end of the drive?
-            letters = len(nigerundajo)
             test = PTH_L.parent
+            print(PTH_L)
             PTH_L = test
+            self.test.clear()
             items = self.get_current_dir()
         else:
             self.test.clear()
@@ -95,18 +94,21 @@ class Listings(QVBoxLayout):
     def get_current_dir(self, file_name="") -> list:
         global PTH_L
         PTH_L = PTH_L.joinpath(file_name)
-        all_files = []
-        # TODO: Fix entering certain directories like: Desktop
-        all_files.append(QListWidgetItem(QIcon("Arrow_48x48"), "..."))
-        for record in PTH_L.iterdir():
-            if record.is_dir():
-                i_rec = QIcon("folder.png")
-                n_rec = QListWidgetItem(i_rec, record.stem)
-                all_files.append(n_rec)
-            elif record.is_file():
-                i_rec = QIcon("file.png")
-                n_rec = QListWidgetItem(i_rec, record.stem)
-                all_files.append(n_rec)
+        try:
+            all_files = []
+            # TODO: Fix entering certain directories like: Desktop
+            all_files.append(QListWidgetItem(QIcon("Arrow_48x48"), "..."))
+            for record in PTH_L.iterdir():
+                if record.is_dir():
+                    i_rec = QIcon("folder.png")
+                    n_rec = QListWidgetItem(i_rec, record.stem)
+                    all_files.append(n_rec)
+                elif record.is_file():
+                    i_rec = QIcon("file.png")
+                    n_rec = QListWidgetItem(i_rec, record.stem)
+                    all_files.append(n_rec)
+        except OSError as error:
+            print(f"The following error occurred: {error}")
         return all_files
 
 
@@ -116,8 +118,9 @@ class Window(QWidget):
         # Main window setup
         self.setWindowTitle("QT Commander")
         self.setGeometry(0, 0, 1200, 800)
+        self.lay = Listings()
 
-        self.setLayout(Listings())
+        self.setLayout(self.lay)
         self.show()
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
@@ -130,9 +133,16 @@ class Window(QWidget):
         elif event.key() == Qt.Key.Key_F8:
             print("F8 button has been pressed... kiss homies goodnight")
         elif event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
-            print("Enter is pressed")
-            # TODO: Figuring out how to pass an item from the keyboard selection :)
-            self.on_double_click(QListWidgetItem)
+            bitch = self.lay.test.currentItem()
+            self.lay.on_double_click(bitch)
+        elif event.key() == Qt.Key.Key_Backspace:
+            global PTH_L
+            test = PTH_L.parent
+            PTH_L = test
+            self.lay.test.clear()
+            items = self.lay.get_current_dir()
+            for item in items:
+                self.lay.test.addItem(item)
 
     def copy_file(file_path: str, dest_path) -> bool:
         try:
