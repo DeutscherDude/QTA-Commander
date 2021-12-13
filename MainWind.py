@@ -55,7 +55,6 @@ class Listings(QVBoxLayout):
 
     def on_double_click_left(self, item: QListWidgetItem):
         # TODO: If double clicked object is a file, proceed to open it ;)
-        global PTH_L
         txt = item.text()
         if txt == "...":
             # TODO: Using the Windows base icons I extracted :^) & maaaaybe introducing some of my own choosing
@@ -69,7 +68,6 @@ class Listings(QVBoxLayout):
             self.left_table.addItem(item)
 
     def on_double_click_right(self, item: QListWidgetItem):
-        global PTH_R
         txt = item.text()
         if txt == "...":
             # TODO: Using the Windows base icons I extracted :^) & maaaaybe introducing some of my own choosing
@@ -85,6 +83,8 @@ class Listings(QVBoxLayout):
     def get_current_dir_left(self, file_name="") -> list:
         global PTH_L
         PTH_L = PTH_L.joinpath(file_name)
+        if file_name == "":
+            PTH_L = PTH_L.parent
         try:
             all_files = []
             # TODO: Fix entering certain directories like: Desktop
@@ -106,6 +106,8 @@ class Listings(QVBoxLayout):
     def get_current_dir_right(self, file_name="") -> list:
         global PTH_R
         PTH_R = PTH_R.joinpath(file_name)
+        if file_name == "":
+            PTH_R = PTH_R.parent
         try:
             all_files = []
             # TODO: Fix entering certain directories like: Desktop
