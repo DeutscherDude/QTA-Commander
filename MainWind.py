@@ -7,60 +7,40 @@ from PySide6.QtGui import QIcon, QKeyEvent
 from PySide6.QtWidgets import QPushButton, QHBoxLayout, QListWidgetItem, QListWidget, QWidget, QListView, \
     QAbstractItemView, QVBoxLayout
 
-BUTTON_WIDTH = 100
-BUTTON_HEIGHT = 60
 HOME = os.environ['USERPROFILE']
 PTH_L = Path(HOME)
-PTH_R = Path('/Users')
+PTH_R = Path(HOME)
 
 
 # TODO: Selecting, copying, deleting, moving multiple files
 # TODO: OS stat - Podaje statystyki plików i folderów; os.path.isdir
-
-
-def get_initial_directory():
-    global PTH_L
-    pth = PTH_L
-    all_files = []
-    for record in pth.iterdir():
-        if record.is_dir():
-            i_rec = QIcon("folder.png")
-            n_rec = QListWidgetItem(i_rec, record.stem)
-            all_files.append(n_rec)
-        elif record.is_file():
-            i_rec = QIcon("file.png")
-            n_rec = QListWidgetItem(i_rec, record.stem)
-            all_files.append(n_rec)
-    return all_files
+# TODO: ?My own instances of QListWidget & QListWidgetItem to include names of variables????????
 
 
 class Listings(QVBoxLayout):
     def __init__(self):
         super().__init__()
-        print(HOME)
-        self.test = QListWidget()
-        self.test.addItem(QListWidgetItem(QIcon("Arrow_48x48"), "..."))
+        self.left_table = QListWidget()
         self.copy_butt = QPushButton("F5 Copy")
         self.move_butt = QPushButton("F6 Move")
         self.fldr_butt = QPushButton("F7 NewFolder")
         self.delete_butt = QPushButton("F8 Delete")
-
-        items = get_initial_directory()
-        self.test.setResizeMode(QListView.ResizeMode(1))
-        self.test2 = QListWidget()
-
-        for item in items:
-            self.test.addItem(item)
-
-        items = get_initial_directory()
+        items = self.get_current_dir_left()
+        self.left_table.setResizeMode(QListView.ResizeMode(1))
+        self.right_table = QListWidget()
 
         for item in items:
-            self.test2.addItem(item)
+            self.left_table.addItem(item)
 
-        self.test.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
-        self.test2.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
-        self.test.itemDoubleClicked.connect(self.on_double_click)
-        self.test2.itemDoubleClicked.connect(self.on_double_click)
+        items = self.get_current_dir_right()
+
+        for item in items:
+            self.right_table.addItem(item)
+
+        self.left_table.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.right_table.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.left_table.itemDoubleClicked.connect(self.on_double_click_left)
+        self.right_table.itemDoubleClicked.connect(self.on_double_click_right)
 
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(self.copy_butt)
@@ -68,30 +48,41 @@ class Listings(QVBoxLayout):
         buttons_layout.addWidget(self.fldr_butt)
         buttons_layout.addWidget(self.delete_butt)
         topLayout = QHBoxLayout()
-        topLayout.addWidget(self.test)
-        topLayout.addWidget(self.test2)
+        topLayout.addWidget(self.left_table)
+        topLayout.addWidget(self.right_table)
         self.addLayout(topLayout)
         self.addLayout(buttons_layout)
 
-    def on_double_click(self, item: QListWidgetItem):
+    def on_double_click_left(self, item: QListWidgetItem):
+        # TODO: If double clicked object is a file, proceed to open it ;)
         global PTH_L
         txt = item.text()
-        # TODO: Figuring out the parent widget of the item?
         if txt == "...":
             # TODO: Using the Windows base icons I extracted :^) & maaaaybe introducing some of my own choosing
             # TODO: Using root whilst hitting the end of the drive?
-            test = PTH_L.parent
-            print(PTH_L)
-            PTH_L = test
-            self.test.clear()
-            items = self.get_current_dir()
+            self.left_table.clear()
+            items = self.get_current_dir_left()
         else:
-            self.test.clear()
-            items = self.get_current_dir(txt)
+            self.left_table.clear()
+            items = self.get_current_dir_left(txt)
         for item in items:
-            self.test.addItem(item)
+            self.left_table.addItem(item)
 
-    def get_current_dir(self, file_name="") -> list:
+    def on_double_click_right(self, item: QListWidgetItem):
+        global PTH_R
+        txt = item.text()
+        if txt == "...":
+            # TODO: Using the Windows base icons I extracted :^) & maaaaybe introducing some of my own choosing
+            # TODO: Using root whilst hitting the end of the drive?
+            self.right_table.clear()
+            items = self.get_current_dir_right()
+        else:
+            self.right_table.clear()
+            items = self.get_current_dir_right(txt)
+        for item in items:
+            self.right_table.addItem(item)
+
+    def get_current_dir_left(self, file_name="") -> list:
         global PTH_L
         PTH_L = PTH_L.joinpath(file_name)
         try:
@@ -101,14 +92,36 @@ class Listings(QVBoxLayout):
             for record in PTH_L.iterdir():
                 if record.is_dir():
                     i_rec = QIcon("folder.png")
-                    n_rec = QListWidgetItem(i_rec, record.stem)
+                    n_rec = QListWidgetItem(i_rec, record.name)
                     all_files.append(n_rec)
                 elif record.is_file():
                     i_rec = QIcon("file.png")
-                    n_rec = QListWidgetItem(i_rec, record.stem)
+                    n_rec = QListWidgetItem(i_rec, record.name)
                     all_files.append(n_rec)
         except OSError as error:
             print(f"The following error occurred: {error}")
+            # TODO: Display a pop up (chmurkę) with information regarding to what went wrong to the user
+        return all_files
+
+    def get_current_dir_right(self, file_name="") -> list:
+        global PTH_R
+        PTH_R = PTH_R.joinpath(file_name)
+        try:
+            all_files = []
+            # TODO: Fix entering certain directories like: Desktop
+            all_files.append(QListWidgetItem(QIcon("Arrow_48x48"), "..."))
+            for record in PTH_R.iterdir():
+                if record.is_dir():
+                    i_rec = QIcon("folder.png")
+                    n_rec = QListWidgetItem(i_rec, record.name)
+                    all_files.append(n_rec)
+                elif record.is_file():
+                    i_rec = QIcon("file.png")
+                    n_rec = QListWidgetItem(i_rec, record.name)
+                    all_files.append(n_rec)
+        except OSError as error:
+            print(f"The following error occurred: {error}")
+            # TODO: Display a pop up (chmurkę) with information regarding to what went wrong to the user
         return all_files
 
 
@@ -133,16 +146,16 @@ class Window(QWidget):
         elif event.key() == Qt.Key.Key_F8:
             print("F8 button has been pressed... kiss homies goodnight")
         elif event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
-            bitch = self.lay.test.currentItem()
+            bitch = self.lay.left_table.currentItem()
             self.lay.on_double_click(bitch)
         elif event.key() == Qt.Key.Key_Backspace:
             global PTH_L
             test = PTH_L.parent
             PTH_L = test
-            self.lay.test.clear()
+            self.lay.left_table.clear()
             items = self.lay.get_current_dir()
             for item in items:
-                self.lay.test.addItem(item)
+                self.lay.left_table.addItem(item)
 
     def copy_file(file_path: str, dest_path) -> bool:
         try:
