@@ -3,7 +3,7 @@ from Tables import Tables
 
 
 class MasterLayout(QVBoxLayout):
-    def __init__(self, tables: list[Tables]):
+    def __init__(self, tables: list[Tables], *args):
         super().__init__()
         self.copy_butt = QPushButton("F5 Copy")
         self.move_butt = QPushButton("F6 Move")
@@ -21,6 +21,11 @@ class MasterLayout(QVBoxLayout):
         for i in range(len(tables)):
             tables[i].assing_tables(tables)
             topLayout.addWidget(tables[i])
+
+        if args is not None:
+            for i in range(len(args)):
+                test = args[i]
+                topLayout.addWidget(test)
 
         self.addLayout(topLayout)
         self.addLayout(buttons_layout)

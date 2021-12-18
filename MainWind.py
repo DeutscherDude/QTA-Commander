@@ -2,20 +2,12 @@ from __future__ import annotations
 import os
 import pathlib
 from MasterLayout import MasterLayout
-# from enum import Enum, auto
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QKeyEvent
-from PySide6.QtWidgets import QPushButton, QHBoxLayout, QWidget, QListView, QVBoxLayout
-
-from Tables import Tables
+from PySide6.QtWidgets import QWidget
 
 # TODO: Selecting, copying, deleting, moving multiple files
-# TODO: OS stat - Podaje statystyki plików i folderów; os.path.isdir
 # TODO: PyDantic ogarnąć
-
-# class Side(Enum):
-#     RIGHT = auto()
-#     LEFT = auto()
 
 
 class Window(QWidget):
@@ -25,6 +17,7 @@ class Window(QWidget):
         self.setWindowTitle("QT Commander")
         self.setGeometry(0, 0, 1240, 800)
         self.setLayout(layout)
+        self.layout = layout
         self.show()
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
@@ -36,14 +29,7 @@ class Window(QWidget):
             print("F7 button has been pressed... suck my anus")
         elif event.key() == Qt.Key.Key_F8:
             print("F8 button has been pressed... kiss homies goodnight")
-        elif event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
-            bitch = self.lay.left_table.currentItem()
-            self.lay.on_double_click(bitch)
         elif event.key() == Qt.Key.Key_Backspace:
-            global PTH_L
-            test = PTH_L.parent
-            PTH_L = test
-            self.lay.left_table.clear()
             items = self.lay.get_current_dir()
             for item in items:
                 self.lay.left_table.addItem(item)
