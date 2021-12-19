@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QAbstractItemView, QListWidget, QListWidgetItem
 from PySide6.QtGui import QIcon, QKeyEvent, Qt
 from PySide6.QtCore import Signal, Slot
 import IconHandler
-from DataFetcher import get_directories
+from DataFetcher import get_dir_widgets, get_available_drives
 
 
 class Tables(QListWidget):
@@ -19,7 +19,7 @@ class Tables(QListWidget):
         super().__init__()
         self.index = index
         self.paths = pathlib.Path(path)
-        items = get_directories(self.paths)
+        items = get_dir_widgets(self.paths)
         for item in items:
             self.addItem(item)
         self.itemDoubleClicked.connect(self.on_double_click)
@@ -27,17 +27,17 @@ class Tables(QListWidget):
 
     def on_double_click(self, item: QListWidgetItem):
         txt = item.text()
+        items = []
         if txt == "...":
-            # TODO: Using root whilst hitting the end of the drive?
             self.clear()
             if self.paths == self.paths.parent:
-                items = [QListWidgetItem(QIcon(IconHandler.Icons.drive),"C:\\"),
-                         QListWidgetItem(QIcon(IconHandler.Icons.drive), "D:\\",),
-                         QListWidgetItem(QIcon(IconHandler.Icons.drive),"E:\\")]
+                drives = get_available_drives()
+                for drive in drives:
+                    items.append(QListWidgetItem(QIcon(IconHandler.Icons.drive), f"{drive}:\\"))
                 self.paths = pathlib.Path("")
             else:
                 self.paths = self.paths.parent
-                items = get_directories(self.paths)
+                items = get_dir_widgets(self.paths)
             for item in items:
                 self.addItem(item)
         elif os.path.isfile(os.path.join(self.paths.as_posix(), txt)):
@@ -45,19 +45,16 @@ class Tables(QListWidget):
         else:
             self.clear()
             self.paths = self.paths.joinpath(txt)
-            items = get_directories(self.paths, txt)
+            items = get_dir_widgets(self.paths, txt)
             for item in items:
                 self.addItem(item)
 
     def assing_tables(self, tables: list[Tables]):
         self.tables = tables
 
-    # def keyPressEvent(self, event:QKeyEvent) -> None:
-    #     if event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
-    #         self.clear()
-    #         items = self.get_current_dir()
-    #         for item in items:
-    #             self.addItem(item)
+    # def eventFilter(self, widget: QListWidget):
+    #     pass
+
 
     # def enter_pressed(self):
     #     self.pressed.emit(self.currentItem())

@@ -4,7 +4,7 @@ import pathlib
 from MasterLayout import MasterLayout
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QKeyEvent
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget, QApplication, QListWidgetItem
 
 # TODO: Selecting, copying, deleting, moving multiple files
 # TODO: PyDantic ogarnąć
@@ -30,9 +30,11 @@ class Window(QWidget):
         elif event.key() == Qt.Key.Key_F8:
             print("F8 button has been pressed... kiss homies goodnight")
         elif event.key() == Qt.Key.Key_Backspace:
-            items = self.lay.get_current_dir()
-            for item in items:
-                self.lay.left_table.addItem(item)
+            current_table = QApplication.focusWidget()
+            current_table.on_double_click(QListWidgetItem("..."))
+        elif event.key() == Qt.Key.Key_Enter or event.key() == Qt.Key.Key_Return:
+            current_table = QApplication.focusWidget()
+            current_table.on_double_click(current_table.currentItem())
 
     def copy_file(file_path: str, dest_path) -> bool:
         try:

@@ -1,5 +1,9 @@
+import ctypes
+import itertools
 import os
 import pathlib
+import platform
+import string
 import time
 from typing import List
 from PySide6.QtGui import QIcon
@@ -19,7 +23,7 @@ def get_directories_paths(path: str, *args) -> List[pathlib.Path]:
     return directory
 
 
-def get_directories(path: pathlib.Path, file_name="", *args) -> List[QListWidgetItem]:
+def get_dir_widgets(path: pathlib.Path, file_name="", *args) -> List[QListWidgetItem]:
     """Fetches a list of QListWidgetItems based on specified path"""
     path.joinpath(file_name)
     try:
@@ -53,3 +57,12 @@ def get_directories_tuples(path: str) -> List[tuple]:
     except OSError as error:
         print(f"The following error occurred: {error}")
     return directory
+
+
+def get_available_drives():
+    oper_sys = platform.system()
+    if 'Windows' != oper_sys:
+        return []
+    drive_bitmask = ctypes.cdll.kernel32.GetLogicalDrives()
+    return list(itertools.compress(string.ascii_uppercase,
+                                   map(lambda x: ord(x) - ord('0'), bin(drive_bitmask)[:1:-1])))
