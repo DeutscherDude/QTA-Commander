@@ -5,8 +5,7 @@ from PySide6.QtWidgets import QAbstractItemView, QListWidget, QListWidgetItem
 from PySide6.QtGui import QIcon, QKeyEvent, Qt
 from PySide6.QtCore import Signal, Slot
 import IconHandler
-from DataFetcher import DataFetcher
-from IconHandler import Icons
+from DataFetcher import get_directories
 
 
 class Tables(QListWidget):
@@ -20,32 +19,11 @@ class Tables(QListWidget):
         super().__init__()
         self.index = index
         self.paths = pathlib.Path(path)
-        paths = self.paths
-        items = self.get_current_dir()
+        items = get_directories(self.paths)
         for item in items:
             self.addItem(item)
         self.itemDoubleClicked.connect(self.on_double_click)
         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
-        # self.DataF = DataFetcher()
-
-    def get_current_dir(self, file_name="") -> list:
-        Tables.last_index = self.index
-        self.paths.joinpath(file_name)
-        try:
-            all_files = [QListWidgetItem(QIcon(Icons.return_), "...")]
-            for record in self.paths.iterdir():
-                if record.is_dir():
-                    i_rec = QIcon(Icons.directory)
-                    n_rec = QListWidgetItem(i_rec, record.name)
-                    all_files.append(n_rec)
-                elif record.is_file():
-                    i_rec = QIcon(Icons.file)
-                    n_rec = QListWidgetItem(i_rec, record.name)
-                    all_files.append(n_rec)
-        except OSError as error:
-            print(f"The following error occurred: {error}")
-            # TODO: Display a pop up with information regarding to what went wrong to the user
-        return all_files
 
     def on_double_click(self, item: QListWidgetItem):
         txt = item.text()
@@ -59,7 +37,7 @@ class Tables(QListWidget):
                 self.paths = pathlib.Path("")
             else:
                 self.paths = self.paths.parent
-                items = self.get_current_dir()
+                items = get_directories(self.paths)
             for item in items:
                 self.addItem(item)
         elif os.path.isfile(os.path.join(self.paths.as_posix(), txt)):
@@ -67,7 +45,7 @@ class Tables(QListWidget):
         else:
             self.clear()
             self.paths = self.paths.joinpath(txt)
-            items = self.get_current_dir(txt)
+            items = get_directories(self.paths, txt)
             for item in items:
                 self.addItem(item)
 
