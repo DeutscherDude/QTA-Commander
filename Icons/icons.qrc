@@ -1,0 +1,10 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file alias="rem_stor">127.ico</file>
+    <file alias="drive">136.ico</file>
+    <file alias="trash">334.ico</file>
+    <file alias="return">Arrow_48x48.png</file>
+    <file alias="file">file.png</file>
+    <file alias="dir">folder.png</file>
+</qresource>
+</RCC>

@@ -2,8 +2,7 @@ from __future__ import annotations
 import os
 import pathlib
 from PySide6.QtWidgets import QAbstractItemView, QListWidget, QListWidgetItem
-from PySide6.QtGui import QIcon, QKeyEvent, Qt
-from PySide6.QtCore import Signal, Slot
+from PySide6.QtGui import QIcon
 import IconHandler
 from DataFetcher import get_dir_widgets, get_available_drives
 
@@ -11,8 +10,6 @@ from DataFetcher import get_dir_widgets, get_available_drives
 class Tables(QListWidget):
     last_index = 0
     current_index = 0
-
-    pressed = Signal()
 
     # TODO: Referencing tables EXCLUDING the table you are currently working on
     def __init__(self, path: str, index: int):

@@ -1,7 +1,7 @@
 import sys
 import os
 from PySide6.QtWidgets import *
-import icons
+from Icons import icons
 from MainWind import Window
 from Tables import Tables
 from MasterLayout import MasterLayout
