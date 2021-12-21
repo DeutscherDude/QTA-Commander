@@ -1,13 +1,13 @@
 import os
 
 
-def copy_file(file_path: str, dest_path: str) -> bool:
+def copy_file(file_path: str, dest_path) -> bool:
     try:
         file = open(file_path, 'rb').read()
         open(dest_path, 'wb').write()
         return True
-    except OSError as error:
-        print(f"{error}")
+    except:
+        print("Argh, an error occurred")
         return False
 
 

@@ -12,13 +12,10 @@ from MasterLayout import MasterLayout
 # TODO: Create a menu bar with settings
 
 
-header = ['File Name', 'Date modified', 'Type', 'Size']
-
-
 if __name__ == "__main__":
     home = os.environ['USERPROFILE']
     App = QApplication(sys.argv)
-    tables = [Tables(home, i) for i in range(2)]
+    tables = [Tables(home, i) for i in range(4)]
     App.setStyleSheet(open('style/style.qss').read())
     layout = MasterLayout(tables)
     inner_widgets = Window(layout)

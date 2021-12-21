@@ -9,9 +9,8 @@ from DataFetcher import get_dir_widgets, get_available_drives
 
 class Tables(QListWidget):
     last_index = 0
-    current_index = 0
+    curr_index = 1
 
-    # TODO: Referencing tables EXCLUDING the table you are currently working on
     def __init__(self, path: str, index: int):
         super().__init__()
         self.index = index
@@ -23,6 +22,8 @@ class Tables(QListWidget):
         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
     def on_double_click(self, item: QListWidgetItem):
+        self.assign_indexes()
+        print(f"{Tables.curr_index} {Tables.last_index}")
         txt = item.text()
         items = []
         if txt == "...":
@@ -49,13 +50,7 @@ class Tables(QListWidget):
     def assing_tables(self, tables: list[Tables]):
         self.tables = tables
 
-    # def eventFilter(self, widget: QListWidget):
-    #     pass
-
-
-    # def enter_pressed(self):
-    #     self.pressed.emit(self.currentItem())
-    #
-    # @Slot(QListWidgetItem)
-    # def entering(self, item: QListWidgetItem):
-    #     self.on_double_click(item)
+    def assign_indexes(self) -> None:
+        if Tables.curr_index != self.index:
+            Tables.last_index = Tables.currentIndex
+            Tables.currentIndex = self.index
