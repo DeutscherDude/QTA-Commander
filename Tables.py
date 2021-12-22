@@ -43,7 +43,7 @@ class Tables(QListWidget):
         else:
             self.clear()
             self.paths = self.paths.joinpath(txt)
-            items = get_dir_widgets(self.paths, txt)
+            items = get_dir_widgets(self.paths, txt)s
             for item in items:
                 self.addItem(item)
 
