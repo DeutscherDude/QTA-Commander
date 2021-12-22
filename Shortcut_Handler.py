@@ -2,6 +2,7 @@ import os
 
 
 def copy_file(file_path: str, dest_path: str) -> bool:
+    """Copies currently selected item to the specified path"""
     try:
         file = open(file_path, 'rb').read()
         open(dest_path, 'wb').write()
