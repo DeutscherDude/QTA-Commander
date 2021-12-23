@@ -25,10 +25,11 @@ class Window(QWidget):
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         if event.key() == Qt.Key.Key_F5:
+            # TODO: Move the entire block to DataFetcher
             boy = QApplication.focusWidget()
             file_path = boy.currentItem().text()
             dir_path = boy.return_path().joinpath(file_path)
-            des_path = Tables.ex_tab[Tables.l_index].return_path()
+            des_path = Tables.ex_tab[Tables.l_index].return_path().joinpath(file_path)
             copy_file(dir_path, des_path)
         elif event.key() == Qt.Key.Key_F6:
             print("F6 button has been pressed... suck my ding dong")

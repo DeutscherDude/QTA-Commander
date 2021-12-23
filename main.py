@@ -15,7 +15,7 @@ from MasterLayout import MasterLayout
 if __name__ == "__main__":
     home = os.environ['USERPROFILE']
     App = QApplication(sys.argv)
-    tables = [Tables(home, i) for i in range(4)]
+    tables = [Tables(home, i) for i in range(2)]
     App.setStyleSheet(open('style/style.qss').read())
     layout = MasterLayout(tables)
     inner_widgets = Window(layout)

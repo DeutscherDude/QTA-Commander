@@ -20,6 +20,7 @@ class Tables(QListWidget):
         for item in items:
             self.addItem(item)
         self.itemDoubleClicked.connect(self.on_double_click)
+        self.itemClicked.connect(Tables._assign_indexes(self))
         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         Tables.ex_tab.append(self)
 
@@ -44,7 +45,7 @@ class Tables(QListWidget):
         else:
             self.clear()
             self.paths = self.paths.joinpath(txt)
-            items = get_dir_widgets(self.paths, txt)s
+            items = get_dir_widgets(self.paths, txt)
             for item in items:
                 self.addItem(item)
 
