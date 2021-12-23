@@ -29,12 +29,15 @@ class Tables(QListWidget):
         txt = item.text()
         items = []
         if txt == "...":
+            print(self.paths)
             self.clear()
-            if self.paths == self.paths.parent:
+            # TODO: Figure out another way of changing between drives
+            if self.paths == self.paths.parent and self.paths != pathlib.Path("\\"):
                 drives = get_available_drives()
                 for drive in drives:
                     items.append(QListWidgetItem(QIcon(IconHandler.Icons.drive), f"{drive}:\\"))
-                self.paths = pathlib.Path("")
+                self.paths = pathlib.Path(self.paths.root)
+                print(self.paths)
             else:
                 self.paths = self.paths.parent
                 items = get_dir_widgets(self.paths)
@@ -43,9 +46,10 @@ class Tables(QListWidget):
         elif os.path.isfile(os.path.join(self.paths.as_posix(), txt)):
             os.startfile(self.paths.joinpath(txt))
         else:
+            print(self.paths)
             self.clear()
-            self.paths = self.paths.joinpath(txt)
             items = get_dir_widgets(self.paths, txt)
+            self.paths = self.paths.joinpath(txt)
             for item in items:
                 self.addItem(item)
 

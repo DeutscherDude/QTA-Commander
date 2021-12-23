@@ -25,7 +25,7 @@ def get_directories_paths(path: str, *args) -> List[pathlib.Path]:
 
 def get_dir_widgets(path: pathlib.Path, file_name="", *args) -> List[QListWidgetItem]:
     """Fetches a list of QListWidgetItems based on specified path"""
-    path.joinpath(file_name)
+    path = path.joinpath(file_name)
     try:
         directory = [QListWidgetItem(QIcon(Icons.return_), "...")]
         for record in path.iterdir():
