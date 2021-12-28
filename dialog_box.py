@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QHBoxLayout, QLabel, QWidget, QStyle
 from PySide6.QtGui import QIcon
-import IconHandler
+import Icons.IconHandler as IconHandler
 
 
 class CustomDialog(QDialog):

@@ -1,14 +1,14 @@
 from __future__ import annotations
 import os
 import pathlib
-import IconHandler
+import Icons.IconHandler as IconHandler
 from PySide6.QtWidgets import QAbstractItemView, QListWidget, QListWidgetItem
 from PySide6.QtGui import QIcon
 from DataFetcher import get_dir_widgets, get_available_drives
 
 
 class Tables(QListWidget):
-    l_index = 0
+    l_index = 1
     c_index = 0
     ex_tab = []
 
@@ -27,7 +27,6 @@ class Tables(QListWidget):
     def on_double_click(self, item: QListWidgetItem):
         Tables._assign_indexes(self)
         txt = item.text()
-        print(f"C_ind: {Tables.c_index}, L_ind: {Tables.l_index}")
         items = []
         if txt == "...":
             self.clear()
@@ -60,4 +59,3 @@ class Tables(QListWidget):
         if self.index != Tables.c_index:
             Tables.l_index = Tables.c_index
             Tables.c_index = self.index
-        print(f"L_ind: {Tables.l_index}, C_ind: {Tables.c_index}")

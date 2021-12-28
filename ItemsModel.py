@@ -4,7 +4,7 @@ from PySide6.QtCore import SIGNAL, QAbstractTableModel
 from PySide6.QtGui import QStandardItemModel, QFont, QIcon, Qt
 from PySide6.QtWidgets import QWidget, QTableView
 from PySide6.QtWidgets import QListView, QVBoxLayout, QTableWidget, QTableWidgetItem
-from IconHandler import Icons
+from Icons.IconHandler import Icons
 
 
 class MyTableModel(QAbstractTableModel):

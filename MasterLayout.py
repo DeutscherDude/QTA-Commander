@@ -1,10 +1,12 @@
 from PySide6.QtWidgets import QVBoxLayout, QPushButton, QListView, QHBoxLayout
 from tables import Tables
+from titlebar import TitleBar
 
 
 class MasterLayout(QVBoxLayout):
     def __init__(self, tables: list[Tables], *args):
         super().__init__()
+        # TODO: Create a separate class where those buttons are created :^)
         self.copy_butt = QPushButton("F5 Copy")
         self.move_butt = QPushButton("F6 Move")
         self.fldr_butt = QPushButton("F7 NewFolder")
@@ -17,6 +19,7 @@ class MasterLayout(QVBoxLayout):
         buttons_layout.addWidget(self.move_butt)
         buttons_layout.addWidget(self.fldr_butt)
         buttons_layout.addWidget(self.delete_butt)
+
         topLayout = QHBoxLayout()
         for i in range(len(tables)):
             tables[i].assing_tables(tables)

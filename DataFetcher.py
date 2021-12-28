@@ -9,7 +9,7 @@ import tables
 from typing import List
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QListWidgetItem, QApplication
-from IconHandler import Icons
+from Icons.IconHandler import Icons
 
 def get_directories_paths(path: str, *args) -> List[pathlib.Path]:
     """Fetches a list paths of directories & files listed in the specified path."""
@@ -73,3 +73,9 @@ def fetch_dest_paths() -> tuple:
     dir_path = boy.return_path().joinpath(file_path)
     des_path = tables.Tables.ex_tab[tables.Tables.l_index].return_path().joinpath(file_path)
     return (dir_path, des_path)
+
+def fetch_c_it_p() -> pathlib.Path:
+    boy = QApplication.focusWidget()
+    file_path = boy.currentItem().text()
+    dir_path = boy.return_path().joinpath(file_path)
+    return dir_path
