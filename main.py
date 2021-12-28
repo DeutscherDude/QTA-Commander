@@ -3,7 +3,7 @@ import os
 from PySide6.QtWidgets import *
 from Icons import icons
 from MainWind import Window
-from Tables import Tables
+from tables import Tables
 from MasterLayout import MasterLayout
 
 # sqlalchemy

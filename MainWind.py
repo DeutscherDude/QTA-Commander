@@ -1,13 +1,9 @@
 from __future__ import annotations
-import os
-import pathlib
 from MasterLayout import MasterLayout
 from Shortcut_Handler import copy_file
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QKeyEvent
 from PySide6.QtWidgets import QWidget, QApplication, QListWidgetItem
-
-from Tables import Tables
 
 # TODO: Selecting, copying, deleting, moving multiple files
 # TODO: PyDantic ogarnąć
@@ -25,12 +21,7 @@ class Window(QWidget):
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         if event.key() == Qt.Key.Key_F5:
-            # TODO: Move the entire block to DataFetcher
-            boy = QApplication.focusWidget()
-            file_path = boy.currentItem().text()
-            dir_path = boy.return_path().joinpath(file_path)
-            des_path = Tables.ex_tab[Tables.l_index].return_path().joinpath(file_path)
-            copy_file(dir_path, des_path)
+            copy_file()
         elif event.key() == Qt.Key.Key_F6:
             print("F6 button has been pressed... suck my ding dong")
         elif event.key() == Qt.Key.Key_F7:

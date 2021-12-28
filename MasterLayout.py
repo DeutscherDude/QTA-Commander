@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QVBoxLayout, QPushButton, QListView, QHBoxLayout
-from Tables import Tables
+from tables import Tables
 
 
 class MasterLayout(QVBoxLayout):

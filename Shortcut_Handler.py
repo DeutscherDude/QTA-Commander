@@ -1,11 +1,16 @@
 import os
 import pathlib
+import DataFetcher as DF
 from dialog_box import CustomDialog
 
 
-def copy_file(file_path: pathlib.Path, dest_path: pathlib.Path) -> bool:
-    """Copies currently selected item to the specified path"""
-
+def copy_file() -> bool:
+    """Copies currently selected item to the previously visited directory"""
+    test = DF.fetch_dest_paths()
+    file_path = test[0]
+    print(test[0])
+    dest_path = test[1]
+    print(test[1])
     if os.path.isfile(dest_path):
         dlg = CustomDialog("Overwrite existing file?", "This file already exists, are you sure you want to overwrite it?")
         if dlg.exec():
@@ -18,6 +23,10 @@ def copy_file(file_path: pathlib.Path, dest_path: pathlib.Path) -> bool:
                 return False
         else:
             return False
+    else:
+        file = open(file_path, 'rb').read()
+        open(dest_path, 'wb').write(file)
+        return True
 
 def delete_file(file_path) -> bool:
     try:

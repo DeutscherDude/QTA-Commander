@@ -5,11 +5,11 @@ import pathlib
 import platform
 import string
 import time
+import tables
 from typing import List
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QListWidgetItem
+from PySide6.QtWidgets import QListWidgetItem, QApplication
 from IconHandler import Icons
-
 
 def get_directories_paths(path: str, *args) -> List[pathlib.Path]:
     """Fetches a list paths of directories & files listed in the specified path."""
@@ -66,3 +66,10 @@ def get_available_drives():
     drive_bitmask = ctypes.cdll.kernel32.GetLogicalDrives()
     return list(itertools.compress(string.ascii_uppercase,
                                    map(lambda x: ord(x) - ord('0'), bin(drive_bitmask)[:1:-1])))
+
+def fetch_dest_paths() -> tuple:
+    boy = QApplication.focusWidget()
+    file_path = boy.currentItem().text()
+    dir_path = boy.return_path().joinpath(file_path)
+    des_path = tables.Tables.ex_tab[tables.Tables.l_index].return_path().joinpath(file_path)
+    return (dir_path, des_path)
