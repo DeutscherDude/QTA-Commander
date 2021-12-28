@@ -17,7 +17,6 @@ class Tables(QListWidget):
         self.index = index
         self.paths = pathlib.Path(path)
         items = get_dir_widgets(self.paths)
-
         for item in items:
             self.addItem(item)
 
