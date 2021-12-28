@@ -11,6 +11,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QListWidgetItem, QApplication
 from Icons.IconHandler import Icons
 
+
 def get_directories_paths(path: str, *args) -> List[pathlib.Path]:
     """Fetches a list paths of directories & files listed in the specified path."""
     s_path = pathlib.Path(path)
@@ -59,7 +60,8 @@ def get_directories_tuples(path: str) -> List[tuple]:
     return directory
 
 
-def get_available_drives():
+def get_available_drives() -> List[str]:
+    """Returns a string list of available drive names"""
     oper_sys = platform.system()
     if 'Windows' != oper_sys:
         return []
@@ -67,12 +69,14 @@ def get_available_drives():
     return list(itertools.compress(string.ascii_uppercase,
                                    map(lambda x: ord(x) - ord('0'), bin(drive_bitmask)[:1:-1])))
 
+
 def fetch_dest_paths() -> tuple:
     boy = QApplication.focusWidget()
     file_path = boy.currentItem().text()
     dir_path = boy.return_path().joinpath(file_path)
     des_path = tables.Tables.ex_tab[tables.Tables.l_index].return_path().joinpath(file_path)
-    return (dir_path, des_path)
+    return dir_path, des_path
+
 
 def fetch_c_it_p() -> pathlib.Path:
     boy = QApplication.focusWidget()

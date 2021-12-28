@@ -17,8 +17,10 @@ class Tables(QListWidget):
         self.index = index
         self.paths = pathlib.Path(path)
         items = get_dir_widgets(self.paths)
+
         for item in items:
             self.addItem(item)
+
         self.itemDoubleClicked.connect(self.on_double_click)
         self.itemClicked.connect(self._assign_indexes)
         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
