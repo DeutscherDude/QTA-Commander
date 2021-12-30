@@ -1,6 +1,10 @@
 import os
+import pathlib
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QListWidgetItem
+from PySide6.QtCore import Qt
 import DataFetcher as DF
+from Icons.IconHandler import Icons
 from dialog_box import CustomDialog
 from tables import Tables
 
@@ -15,6 +19,12 @@ def copy_file() -> bool:
                                                        "it?")
         if dlg.exec():
             try:
+                if file_path.is_file():
+                    dest_tab = Tables.ex_tab[Tables.l_index]
+                    item = QListWidgetItem(QIcon(Icons.file), dest_path.name)
+                    dest_tab.addItem(item)
+                    boy = dest_tab.findItems(dest_path.name, Qt.MatchExactly)
+                    boy[0].setHidden(False)
                 file = open(file_path, 'rb').read()
                 open(dest_path, 'wb').write(file)
                 return True
@@ -24,9 +34,20 @@ def copy_file() -> bool:
         else:
             return False
     else:
+        if file_path.is_file():
+            dest_tab = Tables.ex_tab[Tables.l_index]
+            item = QListWidgetItem(QIcon(Icons.file), dest_path.name)
+            dest_tab.addItem(item)
+            boy = dest_tab.findItems(dest_path.name, Qt.MatchExactly)
+            boy[0].setHidden(False)
+        elif file_path.is_dir():
+            dest_tab = Tables.ex_tab[Tables.l_index]
+            item = QListWidgetItem(QIcon(Icons.directory), dest_path.name)
+            dest_tab.addItem(item)
+            boy = dest_tab.findItems(dest_path.name, Qt.MatchExactly)
+            boy[0].setHidden(False)
         file = open(file_path, 'rb').read()
         open(dest_path, 'wb').write(file)
-        # TODO: Finding an item and setting it visible :)
         return True
 
 
@@ -50,7 +71,6 @@ def move_file() -> bool:
     if copy_file():
         try:
             path = DF.fetch_c_it_p()
-            print("Beep boop")
             os.remove(path)
             __set_visibility(True)
             return True
