@@ -70,16 +70,24 @@ def get_available_drives() -> List[str]:
                                    map(lambda x: ord(x) - ord('0'), bin(drive_bitmask)[:1:-1])))
 
 
-def fetch_dest_paths() -> tuple:
-    boy = QApplication.focusWidget()
-    file_path = boy.currentItem().text()
-    dir_path = boy.return_path().joinpath(file_path)
-    des_path = tables.Tables.ex_tab[tables.Tables.l_index].return_path().joinpath(file_path)
-    return dir_path, des_path
+def fetch_dest_pths_w_items(items_inc = True) -> tuple:
+    try:
+        boy = tables.Tables.ex_tab[tables.Tables.c_index]
+        if items_inc:
+            file_path = boy.currentItem().text()
+            dir_path = boy.return_path().joinpath(file_path)
+            des_path = tables.Tables.ex_tab[tables.Tables.l_index].return_path().joinpath(file_path)
+            return dir_path, des_path
+        else:
+            dir_path = boy.return_path()
+            des_path = tables.Tables.ex_tab[tables.Tables.l_index].return_path()
+            return dir_path, des_path
+    except EnvironmentError as err:
+        print(f"The following error occurred: {err}")
 
 
-def fetch_c_it_p() -> pathlib.Path:
-    boy = QApplication.focusWidget()
+def cur_itm_pth() -> pathlib.Path:
+    boy = tables.Tables.ex_tab[tables.Tables.c_index]
     file_path = boy.currentItem().text()
     dir_path = boy.return_path().joinpath(file_path)
     return dir_path

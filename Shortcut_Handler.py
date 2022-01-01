@@ -1,7 +1,6 @@
 import os
-import pathlib
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QApplication, QListWidgetItem
+from PySide6.QtWidgets import QListWidgetItem
 from PySide6.QtCore import Qt
 import DataFetcher as DF
 from Icons.IconHandler import Icons
@@ -11,9 +10,8 @@ from tables import Tables
 
 def copy_file() -> bool:
     """Copies currently selected item to the previously visited directory"""
-    test = DF.fetch_dest_paths()
-    file_path = test[0]
-    dest_path = test[1]
+    test = DF.fetch_dest_pths_w_items()
+    file_path, dest_path = test[0], test[1]
     if os.path.isfile(dest_path) or os.path.isdir(dest_path):
         dlg = CustomDialog("Overwrite existing file?", "This file already exists, are you sure you want to overwrite "
                                                        "it?")
@@ -53,7 +51,7 @@ def copy_file() -> bool:
 
 def delete_file() -> bool:
     """Permanently deletes a file/directory from a specified path"""
-    path = DF.fetch_c_it_p()
+    path = DF.cur_itm_pth()
     dlg = CustomDialog("Permanently delete a file?", "Are you sure you want to permanently delete this "
                                                      "file/directory? This action cannot be undone.")
     if dlg.exec():
@@ -70,7 +68,7 @@ def move_file() -> bool:
     """Moves the selected file to the specified path"""
     if copy_file():
         try:
-            path = DF.fetch_c_it_p()
+            path = DF.cur_itm_pth()
             os.remove(path)
             __set_visibility(True)
             return True
@@ -79,6 +77,24 @@ def move_file() -> bool:
             return False
 
 
+def create_dir(pressed = True, dir_name="New Folder") -> bool:
+    """Creates a new directory called New Folder"""
+    # TODO: Add functionality to input your own name for the folder. Default: "New Folder"
+    paths = DF.fetch_dest_pths_w_items(False)
+    path = paths[0]
+    path = path.joinpath(dir_name)
+    try:
+        os.mkdir(path)
+        item = QListWidgetItem(QIcon(Icons.directory), path.name)
+        boy = Tables.ex_tab[Tables.c_index]
+        boy.addItem(item)
+        itm = boy.findItems(path.name, Qt.MatchExactly)
+        itm[0].setHidden(False)
+    except OSError as err:
+        print(f"Sadly, the following error occurred: {err}")
+
+
 def __set_visibility(hidden: bool) -> None:
-    itm = QApplication.focusWidget().currentItem()
+    """Sets visibility of an item. Internal method"""
+    itm = Tables.ex_tab[Tables.c_index].currentItem()
     itm.setHidden(hidden)

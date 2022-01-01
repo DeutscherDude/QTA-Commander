@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QVBoxLayout, QPushButton, QListView, QHBoxLayout
 from tables import Tables
+import Shortcut_Handler
 from titlebar import TitleBar
 
 
@@ -8,9 +9,13 @@ class MasterLayout(QVBoxLayout):
         super().__init__()
         # TODO: Create a separate class where those buttons are created :^)
         self.copy_butt = QPushButton("F5 Copy")
+        self.copy_butt.clicked.connect(Shortcut_Handler.copy_file)
         self.move_butt = QPushButton("F6 Move")
+        self.move_butt.clicked.connect(Shortcut_Handler.move_file)
         self.fldr_butt = QPushButton("F7 NewFolder")
+        self.fldr_butt.clicked.connect(Shortcut_Handler.create_dir)
         self.delete_butt = QPushButton("F8 Delete")
+        self.delete_butt.clicked.connect(Shortcut_Handler.delete_file)
 
         tables[0].setResizeMode(QListView.ResizeMode(1))
 

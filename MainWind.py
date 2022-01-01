@@ -1,6 +1,6 @@
 from __future__ import annotations
 from MasterLayout import MasterLayout
-from Shortcut_Handler import copy_file, delete_file, move_file
+from Shortcut_Handler import copy_file, delete_file, move_file, create_dir
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QKeyEvent, QIcon
 from PySide6.QtWidgets import QWidget, QApplication, QListWidgetItem
@@ -26,10 +26,11 @@ class Window(QWidget):
         elif event.key() == Qt.Key.Key_F6:
             move_file()
         elif event.key() == Qt.Key.Key_F7:
-            print("F7 button has been pressed... suck my anus")
-        elif event.key() == Qt.Key.Key_F8:
+            create_dir()
+        elif event.key() == Qt.Key.Key_F8 or event.key() == Qt.Key.Key_Delete:
             delete_file()
         elif event.key() == Qt.Key.Key_Backspace:
+            # TODO: Move the Enter & Return methods to Shortcut_Handler
             current_table = QApplication.focusWidget()
             current_table.on_double_click(QListWidgetItem("..."))
         elif event.key() == Qt.Key.Key_Enter or event.key() == Qt.Key.Key_Return:
