@@ -16,9 +16,9 @@ def main():
     App = QApplication(sys.argv)
     inner_widgets = Window()
     tables = [Tables(home, i) for i in range(2)]
-    App.setStyleSheet(open('style/style.qss').read())
-    layout = MasterLayout(tables)
+    layout = MasterLayout(tables, inner_widgets)
     inner_widgets.setUi(layout)
+    App.setStyleSheet(open('style/style.qss').read())
     sys.exit(App.exec())
 
 

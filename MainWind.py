@@ -12,10 +12,7 @@ from PySide6.QtWidgets import QWidget, QApplication, QListWidgetItem
 class Window(QWidget):
     def __init__(self, *args):
         super().__init__()
-        # Main window setup
-        # self.setWindowTitle("QT Commander")
         self.setWindowFlag(Qt.FramelessWindowHint)
-        # self.setWindowIcon(QIcon("QTA_Icon.png"))
         self.setGeometry(0, 0, 1240, 800)
         self.show()
 
