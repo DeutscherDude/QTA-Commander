@@ -14,4 +14,4 @@ class TitleBar(QWidget):
         self.maxim_btn.setIcon(QIcon(self.style().standardIcon(QStyle.SP_TitleBarMaxButton)))
         self.close_btn = QPushButton("X", parent=self)
         self.close_btn.setIcon(QIcon(self.style().standardIcon(QStyle.SP_TitleBarCloseButton)))
-        self.layout = QHBoxLayout
+        self.layout = QHBoxLayout()

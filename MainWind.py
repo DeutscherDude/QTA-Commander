@@ -10,14 +10,13 @@ from PySide6.QtWidgets import QWidget, QApplication, QListWidgetItem
 
 
 class Window(QWidget):
-    def __init__(self, layout: MasterLayout, *args):
+    def __init__(self, *args):
         super().__init__()
         # Main window setup
-        self.setWindowTitle("QT Commander")
-        self.setWindowIcon(QIcon("QTA_Icon.png"))
+        # self.setWindowTitle("QT Commander")
+        self.setWindowFlag(Qt.FramelessWindowHint)
+        # self.setWindowIcon(QIcon("QTA_Icon.png"))
         self.setGeometry(0, 0, 1240, 800)
-        self.setLayout(layout)
-        self.layout = layout
         self.show()
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
@@ -36,3 +35,7 @@ class Window(QWidget):
         elif event.key() == Qt.Key.Key_Enter or event.key() == Qt.Key.Key_Return:
             current_table = QApplication.focusWidget()
             current_table.on_double_click(current_table.currentItem())
+
+    def setUi(self, layout: MasterLayout):
+        self.setLayout(layout)
+        self.layout = layout
