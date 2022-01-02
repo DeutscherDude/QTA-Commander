@@ -1,8 +1,8 @@
 import sys
 import os
+import MainWind
 from PySide6.QtWidgets import QApplication
 from Icons import icons
-from MainWind import Window
 from tables import Tables
 from MasterLayout import MasterLayout
 
@@ -14,10 +14,12 @@ from MasterLayout import MasterLayout
 def main():
     home = os.environ['USERPROFILE']
     App = QApplication(sys.argv)
-    inner_widgets = Window()
+    inner_widgets = MainWind.CentralWidget()
     tables = [Tables(home, i) for i in range(2)]
     layout = MasterLayout(tables, inner_widgets)
     inner_widgets.setUi(layout)
+    main_win = MainWind.MainWind()
+    main_win.setCentralWidget(inner_widgets)
     App.setStyleSheet(open('style/style.qss').read())
     sys.exit(App.exec())
 

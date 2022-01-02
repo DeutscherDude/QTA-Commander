@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QStyle, QWidget
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QMouseEvent
 from PySide6.QtCore import Qt, QSize
 from Icons.IconHandler import Icons
 
@@ -7,6 +7,8 @@ class TitleBar(QWidget):
     def __init__(self, master: QWidget):
         super().__init__()
         self.setParent(master)
+        self.setMouseTracking(True)
+        self.mouseMoveEvent = self.moveWindow
 
         self.title_bar = QFrame(self)
         self.title_bar.setMaximumSize(QSize(16000, 50))
@@ -47,3 +49,9 @@ class TitleBar(QWidget):
         self.layout.addWidget(self.maxim_btn)
         self.layout.addWidget(self.close_btn)
         
+    def moveWindow(self, event: QMouseEvent) -> None:
+        if event.button() == Qt.LeftButton:
+            print(f"Epstein did not kill himself\n {self.pos}")
+            self.move(self.pos() + event.globalPos() - self.dragPos)
+            self.dragPos = event.globalPos()
+            event.accept()
