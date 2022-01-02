@@ -1,6 +1,7 @@
 import os
-from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QListWidgetItem
+import pathlib
+from PySide6.QtGui import QIcon, QScreen
+from PySide6.QtWidgets import QListWidgetItem, QApplication
 from PySide6.QtCore import Qt
 import DataFetcher as DF
 from Icons.IconHandler import Icons
@@ -93,8 +94,39 @@ def create_dir(pressed = True, dir_name="New Folder") -> bool:
     except OSError as err:
         print(f"Sadly, the following error occurred: {err}")
 
+def return_to_previous() -> bool:
+    current_table = QApplication.focusWidget()
+    if current_table.paths != pathlib.Path("\\"):
+        current_table.on_double_click(QListWidgetItem("..."))
+    return True
+
+def enter_return() -> bool:
+    current_table = QApplication.focusWidget()
+    current_table.on_double_click(current_table.currentItem())
+    return True
 
 def __set_visibility(hidden: bool) -> None:
     """Sets visibility of an item. Internal method"""
     itm = Tables.ex_tab[Tables.c_index].currentItem()
     itm.setHidden(hidden)
+
+
+def maximizeWindow() -> None:
+    app = QApplication.activeWindow()
+    screen_s = QScreen.availableGeometry(QApplication.primaryScreen())
+    if app.max_status == False:
+        x_size = screen_s.width()
+        y_size = screen_s.height()
+        app.setGeometry(0, 0, x_size, y_size)
+        app.max_status = True
+    else:
+        app.setGeometry(0, 0, 1240, 800)
+        x_pos = (screen_s.width() - app.width())/2
+        y_pos = (screen_s.height() - app.height())/2
+        app.move(x_pos, y_pos)
+        app.max_status = False
+
+
+def closeApp() -> None:
+    app = QApplication.activeWindow()
+    app.close()
