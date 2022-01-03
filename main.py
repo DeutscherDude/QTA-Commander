@@ -15,14 +15,16 @@ def main():
     home = os.environ['USERPROFILE']
     App = QApplication(sys.argv)
     inner_widgets = MainWind.CentralWidget()
+    
     tables = [Tables(home, i) for i in range(2)]
     layout = MasterLayout(tables, inner_widgets)
     inner_widgets.setUi(layout)
+
     main_win = MainWind.MainWind()
     main_win.setCentralWidget(inner_widgets)
+
     App.setStyleSheet(open('style/style.qss').read())
     sys.exit(App.exec())
-
 
 if __name__ == "__main__":
     main()

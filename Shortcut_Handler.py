@@ -18,12 +18,6 @@ def copy_file() -> bool:
                                                        "it?")
         if dlg.exec():
             try:
-                if file_path.is_file():
-                    dest_tab = Tables.ex_tab[Tables.l_index]
-                    item = QListWidgetItem(QIcon(Icons.file), dest_path.name)
-                    dest_tab.addItem(item)
-                    boy = dest_tab.findItems(dest_path.name, Qt.MatchExactly)
-                    boy[0].setHidden(False)
                 file = open(file_path, 'rb').read()
                 open(dest_path, 'wb').write(file)
                 return True
@@ -114,18 +108,18 @@ def __set_visibility(hidden: bool) -> None:
 def maximizeWindow() -> None:
     app = QApplication.activeWindow()
     screen_s = QScreen.availableGeometry(QApplication.primaryScreen())
-    if app.max_status == False:
-        x_size = screen_s.width()
-        y_size = screen_s.height()
-        app.setGeometry(0, 0, x_size, y_size)
-        app.max_status = True
+    if app.windowState() != Qt.WindowMaximized:
+        app.setWindowState(Qt.WindowMaximized)
     else:
+        app.setWindowState(Qt.WindowNoState)
         app.setGeometry(0, 0, 1240, 800)
         x_pos = (screen_s.width() - app.width())/2
         y_pos = (screen_s.height() - app.height())/2
         app.move(x_pos, y_pos)
-        app.max_status = False
 
+def minimizeWindow() -> None:
+    app = QApplication.activeWindow()
+    app.setWindowState(Qt.WindowMinimized)
 
 def closeApp() -> None:
     app = QApplication.activeWindow()

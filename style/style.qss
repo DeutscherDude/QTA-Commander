@@ -13,20 +13,25 @@ QPushButton {
     border: 1px solid white;
     color: white;
 }
-QPushButton#evilButton {
+QPushButton#close_button {
     background-color: rgb(175, 5, 5);
     border-style: outset;
-    border: 1px solid black;}
-QPushButton#yellowButton {
+    border: 0.5px solid black;}
+QPushButton#maxim_button {
     background-color: rgb(222, 125, 15);
     border-style: outset;
-    border: 1px solid black;}
-QPushButton#blueButton {
+    border: 0.5px solid black;}
+QPushButton#minim_button {
     background-color: rgb(131, 128, 124);
     border-style: outset;
-    border: 1px solid black;}    
+    border: 0.5px solid black;}    
+QScrollBar{
+    background-color: rgb(20, 20, 20);
+    border-style: outset;
+    border: None
+}
 Tables{
-    border: 1px solid white;
+    border: 0.5px solid white;
     background-color: rgb(90, 90, 90);
     color: white;
 }
