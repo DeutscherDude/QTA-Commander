@@ -1,5 +1,5 @@
 from __future__ import annotations
-from MasterLayout import MasterLayout
+from Layout.MasterLayout import MasterLayout
 from Shortcut_Handler import copy_file, delete_file, move_file, create_dir, return_to_previous, enter_return, maximizeWindow
 from PySide6.QtCore import QPoint, Qt, Signal
 from PySide6.QtGui import QKeyEvent, QMouseEvent, QIcon, QScreen

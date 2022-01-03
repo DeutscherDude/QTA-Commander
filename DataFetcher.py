@@ -5,7 +5,7 @@ import pathlib
 import platform
 import string
 import time
-import tables
+import Widgets.Custom_Widgets.tables as tables
 from typing import List
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QListWidgetItem, QApplication

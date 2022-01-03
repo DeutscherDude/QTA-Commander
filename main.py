@@ -1,10 +1,10 @@
 import sys
 import os
-import MainWind
+import Widgets.MainWind as MainWind
 from PySide6.QtWidgets import QApplication
 from Icons import icons
-from tables import Tables
-from MasterLayout import MasterLayout
+from Widgets.Custom_Widgets.tables import Tables
+from Layout.MasterLayout import MasterLayout
 
 # sqlalchemy
 # TODO: Add capabilities for changing color scheme using QSS

@@ -5,8 +5,8 @@ from PySide6.QtWidgets import QListWidgetItem, QApplication
 from PySide6.QtCore import Qt
 import DataFetcher as DF
 from Icons.IconHandler import Icons
-from dialog_box import CustomDialog
-from tables import Tables
+from Widgets.Custom_Widgets.dialog_box import CustomDialog
+from Widgets.Custom_Widgets.tables import Tables
 
 
 def copy_file() -> bool:

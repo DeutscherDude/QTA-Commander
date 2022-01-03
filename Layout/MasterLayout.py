@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import (QWidget, QVBoxLayout,
                             QListView, QHBoxLayout)
-from tables import Tables
-from titlebar import TitleBar
+from Widgets.Custom_Widgets.tables import Tables
+from Widgets.Custom_Widgets.titlebar import TitleBar
 from bottomButtons import BottomButtons
 
 
