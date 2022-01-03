@@ -4,32 +4,95 @@ QWidget{
     border-radius: 4px;
     padding: 2px;
 }
-QLabel#app_title {
+QLabel#app_title 
+{
     color: goldenrod;
     font: 16px Roboto;
 }
-QPushButton {
-    border: 1px solid white;
-    color: white;
+QMainWindow 
+{
+    border: none;
+    border-radius: 0px;
+    padding: 5px;
 }
-QPushButton#close_button {
+QPushButton
+{
+    border: 1px solid white;
+    border-radius: 0px;
+    font: bold 12px;
+    color: rgb(0, 0, 0)
+}
+QPushButton:pressed 
+{
+    border: 1px solid white;
+    color: rgb(255, 255, 255);
+}
+
+QPushButton#close_button 
+{
     background-color: rgb(175, 5, 5);
     border-style: outset;
-    border: 0.5px solid black;}
-QPushButton#maxim_button {
+    border: none 
+}
+QPushButton#close_button::hover 
+{
+    background-color: rgb(220, 15, 15);
+    color: rgb(0, 0, 0);
+    border-style: outset;
+    border: none 
+}
+QPushButton#close_button::pressed 
+{
+    background-color: rgb(255, 255, 255);
+    border-style: outset;
+    border: none 
+}
+QPushButton#maxim_button 
+{
     background-color: rgb(222, 125, 15);
     border-style: outset;
-    border: 0.5px solid black;}
-QPushButton#minim_button {
+    border: none 
+}
+QPushButton#maxim_button::hover 
+{
+    background-color: rgb(222, 140, 15);
+    color: rgb(0, 0, 0);
+    border-style: outset;
+    border: none 
+}
+QPushButton#maxim_button::pressed 
+{
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border-style: outset;
+    border: none 
+}
+QPushButton#minim_button 
+{
     background-color: rgb(131, 128, 124);
     border-style: outset;
-    border: 0.5px solid black;}    
-QScrollBar {
+    border: none 
+}    
+QPushButton#minim_button::hover 
+{
+    background-color: rgb(160, 140, 130);
+    border-style: outset;
+    border: none 
+}
+QPushButton#minim_button::pressed 
+{
+    background-color: rgb(255, 255, 255);
+    border-style: outset;
+    border: none 
+}
+QScrollBar 
+{
     background-color: grey;
     border-style: outset;
-    border: None
+    border: none;
 }
-Tables {
+Tables 
+{
     border: 1px solid white;
     background-color: rgb(90, 90, 90);
     color: white;

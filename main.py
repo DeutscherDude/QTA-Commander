@@ -1,5 +1,7 @@
 import sys
 import os
+
+from PySide6.QtCore import Qt
 import Widgets.MainWind as MainWind
 from PySide6.QtWidgets import QApplication
 from Icons import icons

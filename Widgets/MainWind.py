@@ -1,9 +1,10 @@
 from __future__ import annotations
+from time import sleep
 from Layout.MasterLayout import MasterLayout
 from Shortcut_Handler import copy_file, delete_file, move_file, create_dir, return_to_previous, enter_return, maximizeWindow
-from PySide6.QtCore import QPoint, Qt, Signal
-from PySide6.QtGui import QCursor, QKeyEvent, QMouseEvent, QIcon, QScreen
-from PySide6.QtWidgets import QMainWindow, QWidget, QApplication, QListWidgetItem
+from PySide6.QtCore import QPoint, QTimer, QTimerEvent, Qt, Signal
+from PySide6.QtGui import QKeyEvent, QMouseEvent
+from PySide6.QtWidgets import QMainWindow, QWidget
 
 # TODO: Selecting, copying, deleting, moving multiple files
 # TODO: PyDantic ogarnąć
@@ -12,48 +13,56 @@ from PySide6.QtWidgets import QMainWindow, QWidget, QApplication, QListWidgetIte
 class MainWind(QMainWindow):
 
     windowMoved = Signal(QPoint)
+    TimerStarted = Signal(QTimer)
 
     def __init__(self):
-        QMainWindow.__init__(self)
-        self.setWindowFlag(Qt.FramelessWindowHint)
+        QMainWindow.__init__(self, None, WindowFlag= Qt.FramelessWindowHint)
         self.setMouseTracking(True)
+
         self.margins = 5
         self.setContentsMargins(self.margins, self.margins, self.margins, self.margins)
-        self.setGeometry(0, 0, 1600, 800)
+        self.setGeometry(0, 0, 1240, 800)
 
+        print(self.windowFlags())
         self.windowMoved.connect(self.movement)
-        
-        # Positions and bools for handling the movement of the app
-        self.click_pos = None
-        self.show()
+        self.TimerStarted.connect(self.timerEvent)
+        self.timer = QTimer()
 
-        self.max_status = False
+        self.jp2 = None
+        self.show()
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if event.buttons() == Qt.LeftButton:
-            self.click_pos = event.pos()
+            self.jp2 = event.globalPos() - self.pos()
         return super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event: QMouseEvent) -> None:
+        return super().mouseReleaseEvent(event)
 
     def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
         maximizeWindow()
         return super().mouseDoubleClickEvent(event)
 
-    # TODO: Fix the movement flickering
+    # TODO: Fix the movement discrapencies
     def mouseMoveEvent(self, event: QMouseEvent) -> None:
+        # self.TimerStarted.emit(self.timer)
         if event.buttons() == Qt.LeftButton:
-            click_dif = QPoint((event.pos().x() - self.click_pos.x()), (event.pos().y() - self.click_pos.y()))
-            self.windowMoved.emit(self.mapToGlobal((self.pos() + click_dif)))
-            self.click_pos = event.globalPos()
+            #Reducing fps?
+            print(f"vektor: {self.jp2}, self.pos: {self.pos()}, event.pos: {event.pos()}")
+            self.windowMoved.emit(self.mapToGlobal(event.pos() - self.jp2))
+            sleep(0.01)
             event.accept()
-        else:
-            self.showNormal()
 
     def movement(self, pos) -> None:
-        # print(pos)
-        if self.windowState() == Qt.WindowMaximized or self.windowState == Qt.WindowFullScreen:
+        if self.windowState() == Qt.WindowMaximized:
             self.setWindowState(Qt.WindowNoState)
-            return
+            return None
         super(MainWind, self).move(pos)
+
+    def timerEvent(self, event: QTimer) -> None:
+        event.startTimer(50)
+        print("Bitch")
+        return super().timerEvent(event)
 
 
 class CentralWidget(QWidget):

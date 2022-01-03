@@ -111,11 +111,7 @@ def maximizeWindow() -> None:
     if app.windowState() != Qt.WindowMaximized:
         app.setWindowState(Qt.WindowMaximized)
     else:
-        app.setWindowState(Qt.WindowNoState)
-        app.setGeometry(0, 0, 1240, 800)
-        x_pos = (screen_s.width() - app.width())/2
-        y_pos = (screen_s.height() - app.height())/2
-        app.move(x_pos, y_pos)
+        app.showNormal()
 
 def minimizeWindow() -> None:
     app = QApplication.activeWindow()
