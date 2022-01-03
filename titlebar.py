@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QStyle, QWidget
-from PySide6.QtGui import QFont, QIcon, QMouseEvent, Qt
-from PySide6.QtCore import QPoint, QSize, Signal
+from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtCore import QSize, Qt
 from Shortcut_Handler import maximizeWindow, closeApp, minimizeWindow
 
 class TitleBar(QWidget):
@@ -11,10 +11,13 @@ class TitleBar(QWidget):
 
         self.setParent(master)
 
-        self.title_bar = QFrame(self)
-        self.title_bar.setMaximumSize(QSize(16000, 50))
-        self.title_bar.setFrameShape(QFrame.NoFrame)
-        self.title_bar.setFrameShadow(QFrame.Raised)
+        self.title_bar = QFrame(self, WindowIcon= QIcon("QTA_Icon.png"), MaximumSize= QSize(16000, 50), 
+                                FrameShape = QFrame.NoFrame, FrameShadow= QFrame.Raised)
+
+        # TEMPORARY SOLUTION
+        test = QPixmap("QTA_Icon.png")
+        test = test.scaledToHeight(30, Qt.SmoothTransformation)
+        self.temp = QLabel(self.title_bar, Pixmap = test, MaximumSize = QSize(30, 30))
 
         self.title = QLabel("Twuj stary wchodzi Ci do wanny", self.title_bar, MaximumSize= QSize(16000, 50),
                             ObjectName= "app_title", FrameShape= QFrame.NoFrame, FrameShadow= QFrame.Raised)
@@ -34,6 +37,7 @@ class TitleBar(QWidget):
                                     Icon= self.style().standardIcon(QStyle.SP_TitleBarCloseButton))
 
         self.layout = QHBoxLayout(self)
+        self.layout.addWidget(self.temp)
         self.layout.addWidget(self.title)
         self.layout.addWidget(self.minim_btn)
         self.layout.addWidget(self.maxim_btn)

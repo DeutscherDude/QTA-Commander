@@ -1,6 +1,6 @@
 from __future__ import annotations
 from MasterLayout import MasterLayout
-from Shortcut_Handler import copy_file, delete_file, move_file, create_dir, return_to_previous, enter_return
+from Shortcut_Handler import copy_file, delete_file, move_file, create_dir, return_to_previous, enter_return, maximizeWindow
 from PySide6.QtCore import QPoint, Qt, Signal
 from PySide6.QtGui import QKeyEvent, QMouseEvent, QIcon, QScreen
 from PySide6.QtWidgets import QMainWindow, QWidget, QApplication, QListWidgetItem
@@ -32,6 +32,10 @@ class MainWind(QMainWindow):
         if event.buttons() == Qt.LeftButton:
             self.m_pos = event.pos()
         return super().mousePressEvent(event)
+
+    def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
+        maximizeWindow()
+        return super().mouseDoubleClickEvent(event)
 
     # TODO: Fix the movement flickering
     def mouseMoveEvent(self, event: QMouseEvent) -> None:
