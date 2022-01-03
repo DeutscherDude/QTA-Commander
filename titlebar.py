@@ -1,48 +1,43 @@
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QStyle, QWidget
-from PySide6.QtGui import QIcon, QMouseEvent
-from PySide6.QtCore import QSize
+from PySide6.QtGui import QFont, QIcon, QMouseEvent, Qt
+from PySide6.QtCore import QPoint, QSize, Signal
 from Shortcut_Handler import maximizeWindow, closeApp
 
 class TitleBar(QWidget):
     def __init__(self, master: QWidget):
         super().__init__()
+        self._m_pos = None
+        self.icon_size = 20
+
         self.setParent(master)
         self.setMouseTracking(True)
+
+        self.setAttribute(Qt.WA_StyledBackground, True)
+
+        font = self.font() or QFont()
+        font.setFamily('Calibri')
 
         self.title_bar = QFrame(self)
         self.title_bar.setMaximumSize(QSize(16000, 50))
         self.title_bar.setFrameShape(QFrame.NoFrame)
         self.title_bar.setFrameShadow(QFrame.Raised)
 
-        self.title = QLabel("Twuj stary wchodzi Ci do wanny", self.title_bar)
-        self.title.setObjectName("app_title")
-        self.title.setMaximumSize(QSize(16000,50))
-        self.title.setFrameShape(QFrame.NoFrame)
-        self.title.setFrameShadow(QFrame.Raised)
+        self.title = QLabel("Twuj stary wchodzi Ci do wanny", self.title_bar, MaximumSize= QSize(16000, 50),
+                            ObjectName= "app_title", font=font, FrameShape= QFrame.NoFrame, FrameShadow= QFrame.Raised)
 
-        self.btns_frame = QFrame(self.title_bar)
-        self.btns_frame.setMaximumSize(QSize(100, 16000))
-        self.btns_frame.setFrameShape(QFrame.StyledPanel)
+        self.btns_frame = QFrame(self.title_bar, MaximumSize= QSize(100, 16000), FrameShape= QFrame.StyledPanel)
 
-        self.minim_btn = QPushButton("", self.btns_frame)
-        self.minim_btn.setObjectName("blueButton")
-        self.minim_btn.setMaximumSize(QSize(40, 40))
-        self.minim_btn.setMinimumSize(QSize(20, 20))
-        self.minim_btn.setIcon(QIcon(self.style().standardIcon(QStyle.SP_TitleBarMinButton)))
+        self.minim_btn = QPushButton("", self.btns_frame,font=font, objectName= "blueButton", 
+                                    MaximumSize= QSize(40, 40), MinimumSize= QSize(20, 20),
+                                    Icon = self.style().standardIcon(QStyle.SP_TitleBarMinButton))
 
-        self.maxim_btn = QPushButton("", self.btns_frame)
-        self.maxim_btn.setObjectName("yellowButton")
-        self.maxim_btn.setMaximumSize(QSize(40, 40))
-        self.maxim_btn.setMinimumSize(QSize(20, 20))
-        self.maxim_btn.setIcon(QIcon(self.style().standardIcon(QStyle.SP_TitleBarMaxButton)))
-        self.maxim_btn.clicked.connect(maximizeWindow)
+        self.maxim_btn = QPushButton("", self.btns_frame, clicked=maximizeWindow, font=font, objectName= "yellowButton", 
+                                    MaximumSize= QSize(40, 40), MinimumSize= QSize(20, 20), 
+                                    Icon= self.style().standardIcon(QStyle.SP_TitleBarMaxButton))
 
-        self.close_btn = QPushButton("", self.btns_frame)
-        self.close_btn.setObjectName("evilButton")
-        self.close_btn.setMaximumSize(QSize(40, 40))
-        self.close_btn.setMinimumSize(QSize(20, 20))
-        self.close_btn.setIcon(QIcon(self.style().standardIcon(QStyle.SP_TitleBarCloseButton)))
-        self.close_btn.clicked.connect(closeApp)
+        self.close_btn = QPushButton("", self.btns_frame, clicked=closeApp, font=font, objectName= "evilButton", 
+                                    MaximumSize= QSize(40, 40), MinimumSize= QSize(20, 20), 
+                                    Icon= self.style().standardIcon(QStyle.SP_TitleBarCloseButton))
 
         self.layout = QHBoxLayout(self)
         self.layout.addWidget(self.title)

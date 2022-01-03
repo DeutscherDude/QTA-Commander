@@ -7,8 +7,7 @@ QWidget{
 }
 QLabel#app_title {
     color: goldenrod;
-    font: Roboto;
-    font-size: 16;
+    font: 16px Roboto;
 }
 QPushButton {
     border: 1px solid white;
