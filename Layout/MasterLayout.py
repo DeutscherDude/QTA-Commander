@@ -2,7 +2,7 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout,
                             QListView, QHBoxLayout)
 from Widgets.Custom_Widgets.tables import Tables
 from Widgets.Custom_Widgets.titlebar import TitleBar
-from bottomButtons import BottomButtons
+from Widgets.Custom_Widgets.bottomButtons import BottomButtons
 
 
 class MasterLayout(QVBoxLayout):

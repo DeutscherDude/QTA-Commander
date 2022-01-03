@@ -7,9 +7,15 @@ from Widgets.Custom_Widgets.tables import Tables
 from Layout.MasterLayout import MasterLayout
 
 # sqlalchemy
-# TODO: Add capabilities for changing color scheme using QSS
+# TODO: Add capabilities for changing color scheme using QSS 
 # TODO: Creating my own ListView using AbstractView(Widget?)
 # TODO: Create a menu bar with settings
+
+
+# TODO: Multiple items deletions, copying, moving
+# Adn. requires the usage of "selectedItems()" and passing those as list. Changes in the code inc.
+
+# TODO: MAJOR BUG - Copying folders is not possible. Needs urgent fixing
 
 def main():
     home = os.environ['USERPROFILE']

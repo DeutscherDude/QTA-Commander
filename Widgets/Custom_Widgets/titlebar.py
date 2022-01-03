@@ -14,12 +14,11 @@ class TitleBar(QWidget):
         self.title_bar = QFrame(self, WindowIcon= QIcon("QTA_Icon.png"), MaximumSize= QSize(16000, 50), 
                                 FrameShape = QFrame.NoFrame, FrameShadow= QFrame.Raised)
 
-        # TEMPORARY SOLUTION
-        test = QPixmap("QTA_Icon.png")
-        test = test.scaledToHeight(30, Qt.SmoothTransformation)
-        self.temp = QLabel(self.title_bar, Pixmap = test, MaximumSize = QSize(30, 30))
+        icon_pix = QPixmap("QTA_Icon.png")
+        icon_pix = icon_pix.scaledToHeight(30, Qt.SmoothTransformation)
+        self.icon_lab = QLabel(self.title_bar, Pixmap = icon_pix, MaximumSize = QSize(30, 30))
 
-        self.title = QLabel("Twuj stary wchodzi Ci do wanny", self.title_bar, MaximumSize= QSize(16000, 50),
+        self.title = QLabel("QTA Commander", self.title_bar, MaximumSize= QSize(16000, 50),
                             ObjectName= "app_title", FrameShape= QFrame.NoFrame, FrameShadow= QFrame.Raised)
 
         self.btns_frame = QFrame(self.title_bar, MaximumSize= QSize(100, 16000), FrameShape= QFrame.StyledPanel)
@@ -37,7 +36,7 @@ class TitleBar(QWidget):
                                     Icon= self.style().standardIcon(QStyle.SP_TitleBarCloseButton))
 
         self.layout = QHBoxLayout(self)
-        self.layout.addWidget(self.temp)
+        self.layout.addWidget(self.icon_lab)
         self.layout.addWidget(self.title)
         self.layout.addWidget(self.minim_btn)
         self.layout.addWidget(self.maxim_btn)

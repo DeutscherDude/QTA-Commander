@@ -2,7 +2,7 @@ from __future__ import annotations
 from Layout.MasterLayout import MasterLayout
 from Shortcut_Handler import copy_file, delete_file, move_file, create_dir, return_to_previous, enter_return, maximizeWindow
 from PySide6.QtCore import QPoint, Qt, Signal
-from PySide6.QtGui import QKeyEvent, QMouseEvent, QIcon, QScreen
+from PySide6.QtGui import QCursor, QKeyEvent, QMouseEvent, QIcon, QScreen
 from PySide6.QtWidgets import QMainWindow, QWidget, QApplication, QListWidgetItem
 
 # TODO: Selecting, copying, deleting, moving multiple files
@@ -17,20 +17,21 @@ class MainWind(QMainWindow):
         QMainWindow.__init__(self)
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setMouseTracking(True)
-        self.setGeometry(0, 0, 1240, 800)
+        self.margins = 5
+        self.setContentsMargins(self.margins, self.margins, self.margins, self.margins)
+        self.setGeometry(0, 0, 1600, 800)
 
         self.windowMoved.connect(self.movement)
         
         # Positions and bools for handling the movement of the app
-        self.m_pos = None
-        self._pressed = False
+        self.click_pos = None
         self.show()
 
         self.max_status = False
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if event.buttons() == Qt.LeftButton:
-            self.m_pos = event.pos()
+            self.click_pos = event.pos()
         return super().mousePressEvent(event)
 
     def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
@@ -40,13 +41,17 @@ class MainWind(QMainWindow):
     # TODO: Fix the movement flickering
     def mouseMoveEvent(self, event: QMouseEvent) -> None:
         if event.buttons() == Qt.LeftButton:
-            self.windowMoved.emit(self.mapToGlobal(event.pos() - self.m_pos))
-        return super().mouseMoveEvent(event)
+            click_dif = QPoint((event.pos().x() - self.click_pos.x()), (event.pos().y() - self.click_pos.y()))
+            self.windowMoved.emit(self.mapToGlobal((self.pos() + click_dif)))
+            self.click_pos = event.globalPos()
+            event.accept()
+        else:
+            self.showNormal()
 
     def movement(self, pos) -> None:
+        # print(pos)
         if self.windowState() == Qt.WindowMaximized or self.windowState == Qt.WindowFullScreen:
             self.setWindowState(Qt.WindowNoState)
-            self.resize(1240, 800)
             return
         super(MainWind, self).move(pos)
 

@@ -1,10 +1,5 @@
-import ctypes
-import itertools
-import os
-import pathlib
-import platform
-import string
-import time
+import ctypes, itertools, os, pathlib
+import platform, string, time
 import Widgets.Custom_Widgets.tables as tables
 from typing import List
 from PySide6.QtGui import QIcon
