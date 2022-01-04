@@ -1,3 +1,4 @@
+from PySide6.QtCore import QSize
 from PySide6.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel
 from PySide6.QtGui import QIcon, QFont
 import Icons.IconHandler as IconHandler
@@ -16,7 +17,7 @@ class CustomDialog(QDialog):
         self.buttonBox.rejected.connect(self.reject)
 
         self.layout = QVBoxLayout()
-        message = QLabel(txt)
+        message = QLabel(txt, ObjectName= "dialog_box")
         message.setFont((QFont("Roboto", 11)))
         message.setWordWrap(True)
         self.layout.addWidget(message)

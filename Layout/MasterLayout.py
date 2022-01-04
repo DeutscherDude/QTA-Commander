@@ -30,6 +30,7 @@ class MasterLayout(QVBoxLayout):
         self.addLayout(title_test)
         self.addLayout(listsLayout)
         self.addLayout(buttons_layout)
+        self.setContentsMargins(0, 0, 0, 0)
 
     def add_custom_layout(self, *args, **kwargs):
         layout = QVBoxLayout()

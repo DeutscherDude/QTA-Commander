@@ -16,7 +16,7 @@ class MainWind(QMainWindow):
     TimerStarted = Signal(QTimer)
 
     def __init__(self):
-        QMainWindow.__init__(self, None, WindowFlag= Qt.FramelessWindowHint)
+        QMainWindow.__init__(self, None, WindowFlag= Qt.FramelessWindowHint, objectName= "main_window")
         self.setMouseTracking(True)
 
         self.margins = 5
