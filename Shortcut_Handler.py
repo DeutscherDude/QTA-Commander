@@ -1,5 +1,7 @@
 import os
 import pathlib
+import logging
+from send2trash import send2trash
 from PySide6.QtGui import QIcon, QScreen
 from PySide6.QtWidgets import QListWidgetItem, QApplication
 from PySide6.QtCore import Qt
@@ -7,6 +9,10 @@ import DataFetcher as DF
 from Icons.IconHandler import Icons
 from Widgets.Custom_Widgets.dialog_box import CustomDialog
 from Widgets.Custom_Widgets.tables import Tables
+
+level = logging.DEBUG
+FMT = '[%(levelname)s] %(asctime)s - %(message)s'
+logging.basicConfig(level=level, format=FMT)
 
 
 def copy_file() -> bool:
@@ -20,6 +26,7 @@ def copy_file() -> bool:
             try:
                 file = open(file_path, 'rb').read()
                 open(dest_path, 'wb').write(file)
+                os.chmod(dest_path, 777)
                 return True
             except OSError as error:
                 print(f"{error}")
@@ -51,10 +58,12 @@ def delete_file() -> bool:
                                                      "file/directory? This action cannot be undone.")
     if dlg.exec():
         try:
-            os.remove(path)
+            os.chmod(path, 777)
+            send2trash(path)
             __set_visibility(True)
             return True
         except os.error as error:
+            logging.error(f"The operation failed. {error}")
             print(f"An error occurred... {error}")
             return False
 

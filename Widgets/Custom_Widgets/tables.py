@@ -7,6 +7,12 @@ from PySide6.QtGui import QIcon
 from DataFetcher import get_dir_widgets, get_available_drives
 
 
+# TODO: Multiple items deletions, copying, moving
+# Adn. requires the usage of "selectedItems()" and passing those as list. Changes in the code inc.
+
+# TODO: MAJOR BUG - Copying folders is not possible. Needs urgent fixing
+
+
 class Tables(QListWidget):
     l_index = 1
     c_index = 0

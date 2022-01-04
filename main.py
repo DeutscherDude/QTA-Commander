@@ -1,5 +1,6 @@
 import sys
 import os
+import platform
 
 from PySide6.QtCore import Qt
 import Widgets.MainWind as MainWind
@@ -14,13 +15,14 @@ from Layout.MasterLayout import MasterLayout
 # TODO: Create a menu bar with settings
 
 
-# TODO: Multiple items deletions, copying, moving
-# Adn. requires the usage of "selectedItems()" and passing those as list. Changes in the code inc.
-
-# TODO: MAJOR BUG - Copying folders is not possible. Needs urgent fixing
-
 def main():
-    home = os.environ['USERPROFILE']
+    home = ''
+    current_sys = platform.system()
+
+    if current_sys == "Windows":
+        home = os.environ['USERPROFILE']
+    elif current_sys == "Linux":
+        home = os.environ['home']
     App = QApplication(sys.argv)
     inner_widgets = MainWind.CentralWidget()
     
