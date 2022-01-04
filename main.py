@@ -15,12 +15,17 @@ from Layout.MasterLayout import MasterLayout
 
 
 # TODO: Multiple items deletions, copying, moving
+# TODO: Add logs
 # Adn. requires the usage of "selectedItems()" and passing those as list. Changes in the code inc.
 
 # TODO: MAJOR BUG - Copying folders is not possible. Needs urgent fixing
 
 def main():
-    home = os.environ['USERPROFILE']
+    if sys.platform == "windows":
+        home = os.environ['USERPROFILE']
+    elif sys.platform == "linux":
+        home = os.environ["HOME"]
+
     App = QApplication(sys.argv)
     inner_widgets = MainWind.CentralWidget()
     

@@ -58,12 +58,13 @@ def get_directories_tuples(path: str) -> List[tuple]:
 def get_available_drives() -> List[str]:
     """Returns a string list of available drive names"""
     oper_sys = platform.system()
-    if 'Windows' != oper_sys:
-        return []
-    drive_bitmask = ctypes.cdll.kernel32.GetLogicalDrives()
-    return list(itertools.compress(string.ascii_uppercase,
+    if 'Windows' == oper_sys:
+        drive_bitmask = ctypes.cdll.kernel32.GetLogicalDrives()
+        return list(itertools.compress(string.ascii_uppercase,
                                    map(lambda x: ord(x) - ord('0'), bin(drive_bitmask)[:1:-1])))
-
+    elif 'Linux' == oper_sys:
+        return []
+    
 
 def fetch_dest_pths_w_items(items_inc = True) -> tuple:
     try:
