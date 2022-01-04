@@ -1,6 +1,6 @@
 import sys
 import os
-
+import platform
 from PySide6.QtCore import Qt
 import Widgets.MainWind as MainWind
 from PySide6.QtWidgets import QApplication
@@ -21,10 +21,12 @@ from Layout.MasterLayout import MasterLayout
 # TODO: MAJOR BUG - Copying folders is not possible. Needs urgent fixing
 
 def main():
+    system = platform.system()
     home = ''
-    if sys.platform == "windows":
+
+    if system == "Windows":
         home = os.environ['USERPROFILE']
-    elif sys.platform == "linux":
+    elif system == "Linux":
         home = os.environ["HOME"]
 
     App = QApplication(sys.argv)
