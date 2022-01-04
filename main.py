@@ -13,12 +13,9 @@ from Layout.MasterLayout import MasterLayout
 # TODO: Creating my own ListView using AbstractView(Widget?)
 # TODO: Create a menu bar with settings
 
-
 # TODO: Multiple items deletions, copying, moving
 # TODO: Add logs
 # Adn. requires the usage of "selectedItems()" and passing those as list. Changes in the code inc.
-
-# TODO: MAJOR BUG - Copying folders is not possible. Needs urgent fixing
 
 def main():
     system = platform.system()
