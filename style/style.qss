@@ -138,3 +138,7 @@ Tables
     background-color: #ECDBBA;
     color: #191919;
 }
+QTableWidget
+{
+    background-color: white;
+}

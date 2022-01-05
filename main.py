@@ -3,7 +3,8 @@ import os
 import platform
 from PySide6.QtCore import Qt
 import Widgets.MainWind as MainWind
-from PySide6.QtWidgets import QApplication
+from Widgets.Custom_Widgets import standardTableView, customTableModel
+from PySide6.QtWidgets import QApplication, QTableWidgetItem
 from Icons import icons
 from Widgets.Custom_Widgets.tables import Tables
 from Layout.MasterLayout import MasterLayout
@@ -29,13 +30,18 @@ def main():
     App = QApplication(sys.argv)
     inner_widgets = MainWind.CentralWidget()
     
+    # test = standardTableView.TableLayout(home)
+    test = customTableModel.TableItemView(home)
+
     tables = [Tables(home, i) for i in range(2)]
-    layout = MasterLayout(tables, inner_widgets)
+    layout = MasterLayout(tables, inner_widgets, test)
     inner_widgets.setUi(layout)
+
 
     main_win = MainWind.MainWind()
     main_win.setCentralWidget(inner_widgets)
-
+    test = QTableWidgetItem()
+    print(test.whatsThis())
     App.setStyleSheet(open('style/style.qss').read())
     sys.exit(App.exec())
 
