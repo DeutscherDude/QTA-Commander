@@ -3,10 +3,10 @@ import os
 import platform
 from PySide6.QtCore import Qt
 import Widgets.MainWind as MainWind
-from Widgets.Custom_Widgets import standardTableView, customTableModel
 from PySide6.QtWidgets import QApplication, QTableWidgetItem
 from Icons import icons
-from Widgets.Custom_Widgets.tables import Tables
+from Widgets.Custom_Widgets.tables import Tables, TablesFrame
+# from Widgets.Custom_Widgets.tables_test import Tables
 from Layout.MasterLayout import MasterLayout
 
 # sqlalchemy
@@ -29,14 +29,11 @@ def main():
 
     App = QApplication(sys.argv)
     inner_widgets = MainWind.CentralWidget()
-    
-    # test = standardTableView.TableLayout(home)
-    test = customTableModel.TableItemView(home)
 
     tables = [Tables(home, i) for i in range(2)]
-    layout = MasterLayout(tables, inner_widgets, test)
+    t_frame = TablesFrame(tables, home)
+    layout = MasterLayout(tables, inner_widgets)
     inner_widgets.setUi(layout)
-
 
     main_win = MainWind.MainWind()
     main_win.setCentralWidget(inner_widgets)

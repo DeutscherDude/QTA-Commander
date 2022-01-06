@@ -5,6 +5,12 @@ QWidget
     border-radius: 4px;
     padding: 2px;
 }
+QListWidget
+{
+    background-color:#ECDBBA;
+    border: none;
+
+}
 QLabel#app_title 
 {
     color: #ECDBBA;
@@ -138,6 +144,12 @@ Tables
     background-color: #ECDBBA;
     color: #191919;
 }
+QFrame#bitch 
+{
+    background-color:#ECDBBA;
+    border: none;
+}
+
 QTableWidget
 {
     background-color: white;

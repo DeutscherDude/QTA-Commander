@@ -1,31 +1,14 @@
 from __future__ import annotations
 import os
 import pathlib
+
+from PySide6.QtCore import Qt
 import Icons.IconHandler as IconHandler
-from typing import List
-from PySide6.QtWidgets import QAbstractItemView, QFrame, QHBoxLayout, QListWidget, QListWidgetItem, QWidget
+from PySide6.QtWidgets import QAbstractItemView, QFrame, QHBoxLayout, QListWidget, QListWidgetItem, QScrollBar, QWidget
 from PySide6.QtGui import QIcon
-from DataFetcher import get_dir_widgets, get_available_drives
+from DataFetcher import get_dir_widgets, get_available_drives, get_directories_tuples
 
-class TablesFrame(QFrame):
-    def __init__(self, tables: List[Tables], path: str):
-        super().__init__()
-
-        self.paths = pathlib.Path(path)
-        self.layout =QHBoxLayout()
-
-        self.time_view_list = QListWidget()
-        items = get_dir_widgets(self.paths)
-        for item in items:
-            self.time_view_list.addItem(item)
-
-        for table in tables:
-            table.setParent(self)
-            self.layout.addWidget(table)
-            self.layout.addWidget(self.time_view_list)
-
-
-class Tables(QListWidget):
+class Tables(QFrame):
     l_index = 1
     c_index = 0
     ex_tab = []
@@ -33,16 +16,42 @@ class Tables(QListWidget):
     def __init__(self, path: str, index: int):
         super().__init__()
 
+        self.setObjectName(u'bitch')
+
         self.index = index
         self.paths = pathlib.Path(path)
         items = get_dir_widgets(self.paths)
-        for item in items:
-            self.addItem(item)
+        self.items_list = QListWidget(self)
 
-        self.itemDoubleClicked.connect(self.on_double_click)
-        self.itemClicked.connect(self._assign_indexes)
-        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+        v_scroll_bar = QScrollBar(Qt.Vertical)
+        h_scroll_bar = QScrollBar(Qt.Horizontal, self)
+        self.items_list.setVerticalScrollBar(v_scroll_bar)
+
+        for item in items:
+            self.items_list.addItem(item)
+
+        self.items_list.itemDoubleClicked.connect(self.on_double_click)
+        self.items_list.itemClicked.connect(self._assign_indexes)
+        self.items_list.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         Tables.ex_tab.append(self)
+
+        self.time_view_list = QListWidget(self)
+        self.time_view_list.setObjectName(u'times')
+        self.time_view_list.setVerticalScrollBar(v_scroll_bar)
+        
+        self.items_list.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        # self.time_view_list.setHorizontalScrollBar(h_scroll_bar)
+
+        self.items_list.setHorizontalScrollBar(h_scroll_bar)
+
+        items = get_directories_tuples(path)
+        self.time_view_list.addItem('')
+        for item in items:
+            self.time_view_list.addItem(QListWidgetItem(QIcon("clock.png"),item[1]))
+
+        self.layout = QHBoxLayout(self)
+        self.layout.addWidget(self.items_list)
+        self.layout.addWidget(self.time_view_list)
 
 
     def on_double_click(self, item: QListWidgetItem):

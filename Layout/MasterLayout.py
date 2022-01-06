@@ -9,7 +9,7 @@ class MasterLayout(QVBoxLayout):
     def __init__(self, tables: list[Tables], master: QWidget, *args):
         super().__init__()
 
-        tables[0].setResizeMode(QListView.ResizeMode(1))
+        # tables[0].setResizeMode(QListView.ResizeMode(1))
 
         listsLayout = QHBoxLayout()
         for i in range(len(tables)):
