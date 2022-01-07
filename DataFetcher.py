@@ -3,7 +3,7 @@ import platform, string, time
 import Widgets.Custom_Widgets.tables as tables
 from typing import List
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QListWidgetItem, QApplication
+from PySide6.QtWidgets import QListWidgetItem
 from Icons.IconHandler import Icons
 
 

@@ -1,12 +1,14 @@
 import sys
 import os
 import platform
-from PySide6.QtCore import Qt
+
+from PySide6.QtCore import QDir, QFileSystemWatcher, QItemSelectionModel, Qt
+from Widgets.Custom_Widgets.bottomButtons import BottomButtons
+from Widgets.Custom_Widgets.titlebar import TitleBar
 import Widgets.MainWind as MainWind
-from PySide6.QtWidgets import QApplication, QTableWidgetItem
+from PySide6.QtWidgets import QApplication, QColumnView, QFileSystemModel, QHeaderView, QScrollBar, QTableView, QTableWidget, QTreeView
 from Icons import icons
 from Widgets.Custom_Widgets.tables import Tables, TablesFrame
-# from Widgets.Custom_Widgets.tables_test import Tables
 from Layout.MasterLayout import MasterLayout
 
 # sqlalchemy
@@ -28,17 +30,30 @@ def main():
         home = os.environ["HOME"]
 
     App = QApplication(sys.argv)
-    inner_widgets = MainWind.CentralWidget()
-
-    tables = [Tables(home, i) for i in range(2)]
-    t_frame = TablesFrame(tables, home)
-    layout = MasterLayout(tables, inner_widgets)
-    inner_widgets.setUi(layout)
 
     main_win = MainWind.MainWind()
+    inner_widgets = MainWind.CentralWidget()
+
+    title = TitleBar(main_win)
+
+    buttons = BottomButtons(main_win)
+    model = QFileSystemModel()
+    model.setRootPath(QDir.currentPath())
+
+    tree = QTreeView()
+
+    test = QTreeView()
+    test.setModel(model)
+
+    tree.setModel(model)
+
+    layout = MasterLayout(main_win)
+    layout.add_frames_vertically(title)
+    layout.add_frames_horizontally_multiple([test, tree])
+
+    inner_widgets.setUi(layout)
+
     main_win.setCentralWidget(inner_widgets)
-    test = QTableWidgetItem()
-    print(test.whatsThis())
     App.setStyleSheet(open('style/style.qss').read())
     sys.exit(App.exec())
 

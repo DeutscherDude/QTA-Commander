@@ -1,6 +1,6 @@
 QWidget
 {
-    background-color: #191919;
+    background-color: white;
     border: 6px;
     border-radius: 4px;
     padding: 2px;
@@ -144,7 +144,7 @@ Tables
     background-color: #ECDBBA;
     color: #191919;
 }
-QFrame#bitch 
+TablesFrame
 {
     background-color:#ECDBBA;
     border: none;
