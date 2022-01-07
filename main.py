@@ -1,14 +1,12 @@
 import sys
 import os
 import platform
-
-from PySide6.QtCore import QDir, QFileSystemWatcher, QItemSelectionModel, Qt
 from Widgets.Custom_Widgets.bottomButtons import BottomButtons
 from Widgets.Custom_Widgets.titlebar import TitleBar
+from Widgets.Custom_Widgets.treeview import MyTreeWidget
 import Widgets.MainWind as MainWind
-from PySide6.QtWidgets import QApplication, QColumnView, QFileSystemModel, QHeaderView, QScrollBar, QTableView, QTableWidget, QTreeView
+from PySide6.QtWidgets import QApplication
 from Icons import icons
-from Widgets.Custom_Widgets.tables import Tables, TablesFrame
 from Layout.MasterLayout import MasterLayout
 
 # sqlalchemy
@@ -37,19 +35,14 @@ def main():
     title = TitleBar(main_win)
 
     buttons = BottomButtons(main_win)
-    model = QFileSystemModel()
-    model.setRootPath(QDir.currentPath())
 
-    tree = QTreeView()
-
-    test = QTreeView()
-    test.setModel(model)
-
-    tree.setModel(model)
+    tree = MyTreeWidget()
+    tree2 = MyTreeWidget()
 
     layout = MasterLayout(main_win)
     layout.add_frames_vertically(title)
-    layout.add_frames_horizontally_multiple([test, tree])
+    layout.add_frames_horizontally_multiple([tree2, tree])
+    layout.add_frames_vertically(buttons)
 
     inner_widgets.setUi(layout)
 
