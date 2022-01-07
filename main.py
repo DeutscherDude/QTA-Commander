@@ -33,7 +33,6 @@ def main():
     inner_widgets = MainWind.CentralWidget()
 
     title = TitleBar(main_win)
-
     buttons = BottomButtons(main_win)
 
     tree = MyTreeWidget()
