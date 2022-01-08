@@ -96,6 +96,13 @@ def cur_itm_pth() -> pathlib.Path:
 ### QTreeWidget/QTreeWidgetItem specific functions ###
 
 
+def cur_itm_pth_tree() -> pathlib.Path:
+    """Fetches a current item path - QTreeWidget specific"""
+    boy = MyTreeWidget.Ex_Views[MyTreeWidget.Cur_Index]
+    file_path = boy.currentItem().text(0)
+    dir_path = boy.return_path().joinpath(file_path)
+    return dir_path
+
 def fetch_dest_pths_w_items_tree() -> tuple[pathlib.Path, pathlib.Path]:
     """Fetches a tuple with an item of QTreeWidget type"""
     try:

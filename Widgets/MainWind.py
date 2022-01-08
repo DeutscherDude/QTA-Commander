@@ -1,7 +1,8 @@
 from __future__ import annotations
 from time import sleep
 from Layout.MasterLayout import MasterLayout
-from Shortcut_Handler import copy_file, delete_file, move_file, create_dir, return_to_previous, enter_return, maximizeWindow
+import Shortcut_Handler as SH
+from Shortcut_Handler import delete_file, return_to_previous, enter_return
 from PySide6.QtCore import QPoint, QTimer, QTimerEvent, Qt, Signal
 from PySide6.QtGui import QKeyEvent, QMouseEvent
 from PySide6.QtWidgets import QMainWindow, QWidget
@@ -31,11 +32,11 @@ class CentralWidget(QWidget):
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         if event.key() == Qt.Key.Key_F5:
-            copy_file()
+            SH.copy_file_tree()
         elif event.key() == Qt.Key.Key_F6:
-            move_file()
+            SH.move_file_tree()
         elif event.key() == Qt.Key.Key_F7:
-            create_dir()
+            SH.create_dir_tree()
         elif event.key() == Qt.Key.Key_F8 or event.key() == Qt.Key.Key_Delete:
             delete_file()
         elif event.key() == Qt.Key.Key_Backspace:

@@ -2,6 +2,7 @@ import os
 import pathlib
 import logging
 import shutil
+import time
 from send2trash import send2trash
 from PySide6.QtGui import QIcon, QScreen
 from PySide6.QtWidgets import QFileIconProvider, QListWidgetItem, QApplication, QTreeWidgetItem
@@ -15,9 +16,6 @@ from Widgets.Custom_Widgets.treeview import MyTreeWidget
 level = logging.DEBUG
 FMT = '[%(levelname)s] %(asctime)s - %(message)s'
 logging.basicConfig(level=level, format=FMT)
-
-# TODO: Label, kopiowanie trwa (Z boku na dole status, które się kopiuje obecnie?), ikonka ma zniknąć, jeszcze się kopiuje
-
 
 def copy_file_tree(add_item = False) -> bool:
     """Copies currently selected item(TreeWidget) to the previously visited directory"""
@@ -60,6 +58,35 @@ def copy_file_tree(add_item = False) -> bool:
                 dest_tab.addTopLevelItem(item)
             shutil.copytree(file_path, dest_path)
             return True
+
+def move_file_tree() -> bool:
+    """Moves the selected file to the specified path"""
+    if copy_file_tree():
+        try:
+            path = DF.cur_itm_pth_tree()
+            os.remove(path)
+            return True
+        except os.error as error:
+            print(f"An error occurred... {error}")
+            return False
+
+def create_dir_tree(pressed = True, dir_name="New Folder") -> bool:
+    """Creates a new directory called New Folder"""
+    # TODO: Add functionality to input your own name for the folder. Default: "New Folder"
+    path = MyTreeWidget.Ex_Views[MyTreeWidget.Cur_Index].get_cur_path()
+    path = path.joinpath(dir_name)
+    try:
+        os.mkdir(path)
+        itm_info = QFileInfo(path.as_posix())
+        icon_prov = QFileIconProvider()
+        item = QTreeWidgetItem([dir_name, "", "<DIR>", str(time.ctime())])
+        icon = icon_prov.icon(itm_info)
+        item.setIcon(0, icon)
+
+        boy = MyTreeWidget.Ex_Views[Tables.c_index]
+        boy.addTopLevelItem(item)
+    except OSError as err:
+        print(f"Sadly, the following error occurred: {err}")
 
 def copy_file() -> bool:
     """Copies currently selected item to the previously visited directory"""

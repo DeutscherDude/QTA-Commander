@@ -19,7 +19,7 @@ class MyTreeWidget(QTreeWidget):
     Last_Index = 1
     Ex_Views = []
 
-    def __init__(self, headers=["Name", "Size", "Type", "Date modified"], parent=None):
+    def __init__(self, headers=["Name", "Size", "Suf.", "Date modified"], parent=None):
         super(MyTreeWidget, self).__init__(parent=parent)
         self.setColumnCount(4)
         self.cur_dir = ""
@@ -106,17 +106,11 @@ class MyTreeWidget(QTreeWidget):
         while iterator.hasNext():
             iterator.next()
             item = iterator.fileInfo()
-            if item.isFile():
-                type = "File"
-            elif item.isDir():
-                type = "Folder"
-            else:
-                type = "Drive" 
             icon = icon_prov.icon(item)
 
             self.widg_names.append(item.fileName())
             dir_item = QTreeWidgetItem([item.fileName(), f"{str(round((item.size() / 1048576), 2))} MB", 
-                                        type, item.lastModified().toString("dd.MM.yyyy hh:mm:ss")])
+                                        item.suffix(), item.lastModified().toString("dd.MM.yyyy hh:mm:ss")])
             
             dir_item.setIcon(0, icon)
             new_tree.append(dir_item)

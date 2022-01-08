@@ -27,23 +27,18 @@ def main():
         home = os.environ["HOME"]
 
     App = QApplication(sys.argv)
-
     main_win = MainWind.MainWind()
     inner_widgets = MainWind.CentralWidget()
-
-    title = TitleBar(main_win)
     buttons = BottomButtons(main_win)
 
     tree = MyTreeWidget()
     tree2 = MyTreeWidget()
 
     layout = MasterLayout(main_win)
-    # layout.add_frames_vertically(title)
     layout.add_frames_horizontally_multiple([tree2, tree])
     layout.add_frames_vertically(buttons)
 
     inner_widgets.setUi(layout)
-
     main_win.setCentralWidget(inner_widgets)
     App.setStyleSheet(open('style/style.qss').read())
     sys.exit(App.exec())
