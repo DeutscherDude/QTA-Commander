@@ -27,7 +27,7 @@ class MyTreeWidget(QTreeWidget):
         
         self.Item_Double_Clicked.connect(self.enter_directory)
         self.setDragEnabled(True)
-        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        # self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.setDragDropMode(QAbstractItemView.DragDrop)
         self.setAcceptDrops(False)
         self.setDragDropOverwriteMode(True)
@@ -123,7 +123,7 @@ class MyTreeWidget(QTreeWidget):
         
         return new_tree
         
-    def get_cur_path(self) -> pathlib.Path:
+    def get_cur_path(self) -> pathlib.Path: 
         return self.cur_dir
 
     def dragEnterEvent(self, event: QDragEnterEvent):

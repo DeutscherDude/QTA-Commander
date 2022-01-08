@@ -9,49 +9,20 @@ from PySide6.QtWidgets import QMainWindow, QWidget
 # TODO: Selecting, copying, deleting, moving multiple files
 # TODO: PyDantic ogarnąć
 
-
 class MainWind(QMainWindow):
 
     windowMoved = Signal(QPoint)
     TimerStarted = Signal(QTimer)
 
     def __init__(self):
-        QMainWindow.__init__(self, None, WindowFlag= Qt.FramelessWindowHint, objectName= "main_window")
+        QMainWindow.__init__(self, None, objectName= "main_window")
         self.setMouseTracking(True)
 
         self.margins = 5
         self.setContentsMargins(self.margins, self.margins, self.margins, self.margins)
         self.setGeometry(0, 0, 1240, 800)
 
-        self.windowMoved.connect(self.movement)
-
-        self.jp2 = None
         self.show()
-
-    def mousePressEvent(self, event: QMouseEvent) -> None:
-        if event.buttons() == Qt.LeftButton:
-            self.jp2 = event.globalPos() - self.pos()
-        return super().mousePressEvent(event)
-
-    def mouseReleaseEvent(self, event: QMouseEvent) -> None:
-        return super().mouseReleaseEvent(event)
-
-    def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
-        maximizeWindow()
-        return super().mouseDoubleClickEvent(event)
-
-    # TODO: Fix the movement discrapencies
-    def mouseMoveEvent(self, event: QMouseEvent) -> None:
-        if event.buttons() == Qt.LeftButton:
-            self.windowMoved.emit(self.mapToGlobal(event.pos() - self.jp2))
-            event.accept()
-
-    def movement(self, pos) -> None:
-        if self.windowState() == Qt.WindowMaximized:
-            self.setWindowState(Qt.WindowNoState)
-            return None
-        super(MainWind, self).move(pos)
-
 
 class CentralWidget(QWidget):
     def __init__(self, *args):

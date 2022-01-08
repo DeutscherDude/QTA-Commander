@@ -16,9 +16,12 @@ level = logging.DEBUG
 FMT = '[%(levelname)s] %(asctime)s - %(message)s'
 logging.basicConfig(level=level, format=FMT)
 
+# TODO: Label, kopiowanie trwa (Z boku na dole status, które się kopiuje obecnie?), ikonka ma zniknąć, jeszcze się kopiuje
+
 
 def copy_file_tree(add_item = False) -> bool:
     """Copies currently selected item(TreeWidget) to the previously visited directory"""
+    print("Boop")
     item = DF.fetch_dest_pths_w_items_tree()
     file_path, dest_path = item[0], item[1]
     file_inf = QFileInfo(file_path)

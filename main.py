@@ -38,7 +38,7 @@ def main():
     tree2 = MyTreeWidget()
 
     layout = MasterLayout(main_win)
-    layout.add_frames_vertically(title)
+    # layout.add_frames_vertically(title)
     layout.add_frames_horizontally_multiple([tree2, tree])
     layout.add_frames_vertically(buttons)
 
