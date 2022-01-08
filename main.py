@@ -11,7 +11,6 @@ from Layout.MasterLayout import MasterLayout
 
 # sqlalchemy
 # TODO: Add capabilities for changing color scheme using QSS 
-# TODO: Creating my own ListView using AbstractView(Widget?)
 # TODO: Create a menu bar with settings
 
 # TODO: Multiple items deletions, copying, moving

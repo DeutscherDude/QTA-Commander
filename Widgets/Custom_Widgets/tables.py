@@ -11,6 +11,7 @@ import DataFetcher as DF
 # from DataFetcher import get_dir_widgets, get_available_drives, get_directories_tuples
 
 class Tables(QListWidget):
+
     l_index = 1
     c_index = 0
     ex_tab = []

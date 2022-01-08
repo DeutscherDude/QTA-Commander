@@ -1,36 +1,47 @@
 import pathlib
-import logging
+import os
 from typing import List
-from PySide6.QtGui import QDrag, QDragEnterEvent, QDropEvent, QIcon, QMouseEvent, QPixmap
-from PySide6.QtCore import QDir, QDirIterator, QFileInfo, QMimeData, Qt, Signal
-from PySide6.QtWidgets import QAbstractItemView, QFileIconProvider, QTextBrowser, QTreeWidget, QTreeWidgetItem
+from PySide6.QtGui import QDragEnterEvent, QDropEvent, QIcon, QMouseEvent, QPixmap
+from PySide6.QtCore import QDir, QDirIterator,QFileInfo, Qt, Signal
+from PySide6.QtWidgets import QAbstractItemView, QFileIconProvider,QTreeWidget, QTreeWidgetItem
 from Icons.IconHandler import Icons
 
 
 class MyTreeWidget(QTreeWidget):
 
     Item_Double_Clicked = Signal(QTreeWidgetItem)
-    Dragged_Item = ''
+    Dragged_Items = []
 
-    def __init__(self, parent=None):
+
+    Free_Index = 0
+    Cur_Index = 0
+    Last_Index = 1
+    Ex_Views = []
+
+    def __init__(self, headers=["Name", "Size", "Type", "Date modified"], parent=None):
         super(MyTreeWidget, self).__init__(parent=parent)
         self.setColumnCount(4)
         self.cur_dir = ""
         
         self.Item_Double_Clicked.connect(self.enter_directory)
         self.setDragEnabled(True)
+        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.setDragDropMode(QAbstractItemView.DragDrop)
         self.setAcceptDrops(False)
         self.setDragDropOverwriteMode(True)
 
-        header = QTreeWidgetItem(["Name", "Size", "Type", "Date modified"])
+        header = QTreeWidgetItem(headers)
         header.setTextAlignment(0, Qt.AlignCenter); header.setTextAlignment(1, Qt.AlignCenter)
         header.setTextAlignment(2, Qt.AlignCenter); header.setTextAlignment(3, Qt.AlignCenter)
 
         self.setHeaderItem(header)
         self.setSortingEnabled(True)
-        
+       
         self._init_fillTree()
+
+        MyTreeWidget.Ex_Views.append(self)
+        self.index = MyTreeWidget.Free_Index
+        MyTreeWidget.Free_Index = MyTreeWidget.Free_Index + 1
 
 
     def _init_fillTree(self):
@@ -101,25 +112,41 @@ class MyTreeWidget(QTreeWidget):
         
         return new_tree
         
+    def get_cur_path(self) -> str:
+        return self.cur_dir
+
     def dragEnterEvent(self, event: QDragEnterEvent):
         event.acceptProposedAction()
 
     def dropEvent(self, event: QDropEvent):
-        icon_prov = QFileIconProvider()
-        item = MyTreeWidget.Dragged_Item[0]
-        dir_ = MyTreeWidget.Dragged_Item[1]
-        pth = pathlib.Path(dir_)
-        pth = pth.joinpath(item.text(0))
-        pth = pth.as_posix()
+        items = MyTreeWidget.Dragged_Items
 
-        icon = icon_prov.icon(QFileInfo(pth))
-        item.setIcon(0, icon)
-        self.addTopLevelItem(QTreeWidgetItem([item.text(0), item.text(1), item.text(2), item.text(3)]))
+        # self.findItems()
+
+        dir_ = MyTreeWidget.Ex_Views[MyTreeWidget.Last_Index].get_cur_path()
+        icon_prov = QFileIconProvider()
+        bois = []
+        for item in items:
+            pth = pathlib.Path(dir_)
+            pth = pth.joinpath(item.text(0))
+            pth = pth.as_posix()
+            icon = icon_prov.icon(QFileInfo(pth))
+            copy = QTreeWidgetItem([item.text(0), item.text(1), item.text(2), item.text(3)])
+            copy.setIcon(0, icon)
+            bois.append(copy)
+    
+        self.setAcceptDrops(True)
+
+        if len(items) > 1:
+            self.addTopLevelItems(bois)
+        else:
+            self.addTopLevelItem(bois[0])
+        
         event.accept()
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
-        if event.buttons() == Qt.LeftButton:
-            MyTreeWidget.Dragged_Item = self.extract_data(self.itemAt(event.pos()))
+        if event.buttons() == Qt.LeftButton & len(self.selectedItems()) != 0:
+            MyTreeWidget.Dragged_Items = self.selectedItems()
         return super().mousePressEvent(event)
 
     def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
@@ -129,11 +156,3 @@ class MyTreeWidget(QTreeWidget):
 
     def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         return super().mouseReleaseEvent(event)
-
-    def extract_data(self, item: QTreeWidgetItem):
-        name = item.text(0)
-        size = item.text(1)
-        type = item.text(2)
-        edit_t = item.text(3)
-        new_itm = QTreeWidgetItem([name, size, type, edit_t])
-        return new_itm, self.cur_dir
