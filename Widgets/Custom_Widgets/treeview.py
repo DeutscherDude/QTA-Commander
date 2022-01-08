@@ -1,5 +1,6 @@
 import pathlib
 import os
+from types import NoneType
 from typing import List
 from PySide6.QtGui import QDragEnterEvent, QDropEvent, QIcon, QMouseEvent, QPixmap
 from PySide6.QtCore import QDir, QDirIterator,QFileInfo, Qt, Signal
@@ -22,6 +23,7 @@ class MyTreeWidget(QTreeWidget):
         super(MyTreeWidget, self).__init__(parent=parent)
         self.setColumnCount(4)
         self.cur_dir = ""
+        self.widg_names = []
         
         self.Item_Double_Clicked.connect(self.enter_directory)
         self.setDragEnabled(True)
@@ -59,6 +61,9 @@ class MyTreeWidget(QTreeWidget):
 
             dir_item = QTreeWidgetItem([drives[i].path(), drives[i].size(), 
                                         type, drives[i].lastModified().toString("dd.MM.yyyy hh:mm:ss")])
+
+            self.widg_names.append(drives[i].path())
+
             icon = icon_prov.icon(drives[i])
             dir_item.setIcon(0, icon)
 
@@ -69,7 +74,6 @@ class MyTreeWidget(QTreeWidget):
     def enter_directory(self):
         self.cur_dir = pathlib.Path(self.cur_dir)
         further = True
-
         item = self.itemFromIndex(self.currentIndex())
 
         if item.text(0) == "...":
@@ -95,6 +99,8 @@ class MyTreeWidget(QTreeWidget):
         return_item.setIcon(0, QIcon(Icons.return_))
         new_tree = [return_item]
 
+        self.widg_names = []
+
         while iterator.hasNext():
             iterator.next()
             item = iterator.fileInfo()
@@ -106,7 +112,9 @@ class MyTreeWidget(QTreeWidget):
                 type = "Drive" 
             icon = icon_prov.icon(item)
 
-            dir_item = QTreeWidgetItem([item.completeBaseName(), item.size(), type, item.lastModified().toString("dd.MM.yyyy hh:mm:ss")])
+            self.widg_names.append(item.fileName())
+            dir_item = QTreeWidgetItem([item.fileName(), f"{str(round((item.size() / 1048576), 2))} MB", type, item.lastModified().toString("dd.MM.yyyy hh:mm:ss")])
+            
             dir_item.setIcon(0, icon)
             new_tree.append(dir_item)
         
@@ -120,8 +128,6 @@ class MyTreeWidget(QTreeWidget):
 
     def dropEvent(self, event: QDropEvent):
         items = MyTreeWidget.Dragged_Items
-
-        # self.findItems()
 
         dir_ = MyTreeWidget.Ex_Views[MyTreeWidget.Last_Index].get_cur_path()
         icon_prov = QFileIconProvider()
@@ -139,8 +145,9 @@ class MyTreeWidget(QTreeWidget):
 
         if len(items) > 1:
             self.addTopLevelItems(bois)
-        else:
+        elif bois[0].text(0) not in self.widg_names:
             self.addTopLevelItem(bois[0])
+            self.widg_names.append(bois[0].text(0))
         
         event.accept()
 
@@ -150,7 +157,7 @@ class MyTreeWidget(QTreeWidget):
         return super().mousePressEvent(event)
 
     def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
-        if event.buttons() == Qt.LeftButton:
+        if event.buttons() == Qt.LeftButton and type(self.itemAt(event.pos())) != NoneType:
             self.Item_Double_Clicked.emit(event)
             return super().mouseDoubleClickEvent(event)
 
