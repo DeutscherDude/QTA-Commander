@@ -4,17 +4,59 @@ import logging
 import shutil
 from send2trash import send2trash
 from PySide6.QtGui import QIcon, QScreen
-from PySide6.QtWidgets import QListWidgetItem, QApplication
-from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QFileIconProvider, QListWidgetItem, QApplication, QTreeWidgetItem
+from PySide6.QtCore import QFileInfo, Qt
 import DataFetcher as DF
 from Icons.IconHandler import Icons
 from Widgets.Custom_Widgets.dialog_box import CustomDialog
 from Widgets.Custom_Widgets.tables import Tables
+from Widgets.Custom_Widgets.treeview import MyTreeWidget
 
 level = logging.DEBUG
 FMT = '[%(levelname)s] %(asctime)s - %(message)s'
 logging.basicConfig(level=level, format=FMT)
 
+
+def copy_file_tree(add_item = False) -> bool:
+    """Copies currently selected item(TreeWidget) to the previously visited directory"""
+    item = DF.fetch_dest_pths_w_items_tree()
+    file_path, dest_path = item[0], item[1]
+    file_inf = QFileInfo(file_path)
+    if os.path.exists(dest_path):
+        dlg = CustomDialog("Overwrite existing file?", f"{file_inf.fileName()} already exists, are you sure you want to overwrite "
+                                                       "it?")
+        if dlg.exec():
+            try:
+                file = open(file_path, 'rb').read()
+                open(dest_path, 'wb').write(file)
+                os.chmod(dest_path, 777)
+                return True
+            except OSError as error:
+                print(f"{error}")
+                return False
+        else:
+            return False
+    else:
+        if file_path.is_file():
+            if add_item:
+                icon_prov = QFileIconProvider()
+                icon = icon_prov.icon(file_inf)
+
+                dest_tab = MyTreeWidget.Ex_Views[Tables.l_index]
+                item = QTreeWidgetItem([item.fileName(), f"{str(round((item.size() / 1048576), 2))} MB", 
+                                        type, item.lastModified().toString("dd.MM.yyyy hh:mm:ss")])
+                item.setIcon(0, icon)
+                dest_tab.addTopLevelItem(item)
+            file = open(file_path, 'rb').read()
+            open(dest_path, 'wb').write(file)
+            return True
+        elif file_path.is_dir():
+            if add_item:
+                dest_tab = Tables.ex_tab[Tables.l_index]
+                item = QListWidgetItem(QIcon(Icons.directory), dest_path.name)
+                dest_tab.addTopLevelItem(item)
+            shutil.copytree(file_path, dest_path)
+            return True
 
 def copy_file() -> bool:
     """Copies currently selected item to the previously visited directory"""
@@ -68,7 +110,6 @@ def delete_file() -> bool:
             logging.error(f"The operation failed. {error}")
             print(f"An error occurred... {error}")
             return False
-
 
 def move_file() -> bool:
     """Moves the selected file to the specified path"""

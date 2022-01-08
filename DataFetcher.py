@@ -1,11 +1,13 @@
 import ctypes, itertools, os, pathlib
 import platform, string, time
 import Widgets.Custom_Widgets.tables as tables
-from typing import List
+from typing import List, Sequence
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QListWidgetItem
 from Icons.IconHandler import Icons
+from Widgets.Custom_Widgets.treeview import MyTreeWidget
 
+### QListWidget/QListWidgetItem specific functions ###
 
 def get_directories_paths(path: str, *args) -> List[pathlib.Path]:
     """Fetches a list paths of directories & files listed in the specified path."""
@@ -67,6 +69,7 @@ def get_available_drives() -> List[str]:
     
 
 def fetch_dest_pths_w_items(items_inc = True) -> tuple:
+    """Fetches a tuple with an item of QListWidgetItem type"""
     try:
         boy = tables.Tables.ex_tab[tables.Tables.c_index]
         if items_inc:
@@ -83,7 +86,23 @@ def fetch_dest_pths_w_items(items_inc = True) -> tuple:
 
 
 def cur_itm_pth() -> pathlib.Path:
+    """Fetches a current item path - QListWidget specific"""
     boy = tables.Tables.ex_tab[tables.Tables.c_index]
     file_path = boy.currentItem().text()
     dir_path = boy.return_path().joinpath(file_path)
     return dir_path
+
+
+### QTreeWidget/QTreeWidgetItem specific functions ###
+
+
+def fetch_dest_pths_w_items_tree() -> tuple[pathlib.Path, pathlib.Path]:
+    """Fetches a tuple with an item of QTreeWidget type"""
+    try:
+        boy = MyTreeWidget.Ex_Views[MyTreeWidget.Last_Index]
+        file_path = boy.currentItem().text(0)
+        dir_path = boy.get_cur_path().joinpath(file_path)
+        des_path = MyTreeWidget.Ex_Views[MyTreeWidget.Cur_Index].get_cur_path().joinpath(file_path)
+        return dir_path, des_path
+    except EnvironmentError as err:
+        print(f"The following error occurred: {err}")

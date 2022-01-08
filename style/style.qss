@@ -1,15 +1,9 @@
 QWidget
 {
-    background-color: white;
+    background-color: #191919;
     border: 6px;
     border-radius: 4px;
     padding: 2px;
-}
-QListWidget
-{
-    background-color:#ECDBBA;
-    border: none;
-
 }
 QLabel#app_title 
 {
@@ -137,6 +131,25 @@ QScrollBar
     border-style: outset;
     border: 4px;
 }
+QTableWidget
+{
+    background-color: white;
+}
+MyTreeWidget
+{
+    border: 4px;
+    border-color: black;
+    background: #ECDBBA;
+    font: 12px;
+    color: #191919;
+}
+QHeaderView#header
+{
+    border: 2px;
+    border-color:#ECDBBA;
+    color: red;
+    font: 12px;
+}
 Tables 
 {
     border: 4px;
@@ -148,9 +161,4 @@ TablesFrame
 {
     background-color:#ECDBBA;
     border: none;
-}
-
-QTableWidget
-{
-    background-color: white;
 }
