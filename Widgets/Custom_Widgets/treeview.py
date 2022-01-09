@@ -94,6 +94,17 @@ class MyTreeWidget(QTreeWidget):
             self.addTopLevelItems(new_tree)
             self.sortByColumn(0, Qt.SortOrder.AscendingOrder)
 
+    def refresh(self):
+        self.clear()
+        self.cur_dir = pathlib.Path(self.cur_dir)
+
+        self.setAcceptDrops(True)
+        dir = self.cur_dir.as_posix()
+        iterator = QDirIterator(dir, QDir.NoDotAndDotDot | QDir.AllEntries | QDirIterator.Subdirectories)
+        new_tree = self.iterate(iterator)
+        self.addTopLevelItems(new_tree)
+        self.sortByColumn(0, Qt.SortOrder.AscendingOrder)
+
     def iterate(self, iterator: QDirIterator) -> List[QTreeWidgetItem]:
         icon_prov = QFileIconProvider()
         return_item = QTreeWidgetItem(["...", "", "", ""])

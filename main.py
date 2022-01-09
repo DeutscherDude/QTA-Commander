@@ -13,10 +13,6 @@ from Layout.MasterLayout import MasterLayout
 # TODO: Add capabilities for changing color scheme using QSS 
 # TODO: Create a menu bar with settings
 
-# TODO: Multiple items deletions, copying, moving
-# TODO: Add logs
-# Adn. requires the usage of "selectedItems()" and passing those as list. Changes in the code inc.
-
 def main():
     system = platform.system()
     home = ''

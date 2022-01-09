@@ -44,8 +44,8 @@ def copy_file_tree(add_item = False) -> bool:
                 icon = icon_prov.icon(file_inf)
 
                 dest_tab = MyTreeWidget.Ex_Views[Tables.l_index]
-                item = QTreeWidgetItem([item.fileName(), f"{str(round((item.size() / 1048576), 2))} MB", 
-                                        type, item.lastModified().toString("dd.MM.yyyy hh:mm:ss")])
+                item = QTreeWidgetItem([file_inf.fileName(), f"{str(round((file_inf.size() / 1048576), 2))} MB", 
+                                        file_inf.suffix(), file_inf.lastModified().toString("dd.MM.yyyy hh:mm:ss")])
                 item.setIcon(0, icon)
                 dest_tab.addTopLevelItem(item)
             file = open(file_path, 'rb').read()
@@ -64,6 +64,10 @@ def move_file_tree() -> bool:
     if copy_file_tree():
         try:
             path = DF.cur_itm_pth_tree()
+            tab = MyTreeWidget.Ex_Views[MyTreeWidget.Cur_Index]
+            file_inf = QFileInfo(path)
+            tab.addTopLevelItem(QTreeWidgetItem([file_inf.fileName(),f"{str(round((file_inf.size() / 1048576), 2))} MB", 
+                                        file_inf.suffix(), file_inf.lastModified().toString("dd.MM.yyyy hh:mm:ss")]))
             os.remove(path)
             return True
         except os.error as error:
@@ -104,16 +108,19 @@ def delete_file_tree() -> bool:
     path = DF.cur_itm_pth_tree()
     dlg = CustomDialog("Move file to trash bin?", "Are you sure you want to move this "
                                                      "file/directory to trash?")
+    cur_tab = MyTreeWidget.Ex_Views[MyTreeWidget.Cur_Index]
     if dlg.exec():
         try:
             os.chmod(path, 777)
             send2trash(path)
+            cur_tab.refresh()
             return True
         except os.error as error:
             logging.error(f"The operation failed. {error}")
             print(f"An error occurred... {error}")
             return False
 
+### QListWidget specific methods, redundant for this project ###
 
 def copy_file() -> bool:
     """Copies currently selected item to the previously visited directory"""
