@@ -150,15 +150,3 @@ QHeaderView#header
     color: red;
     font: 12px;
 }
-Tables 
-{
-    border: 4px;
-    border-color: #C84B31;
-    background-color: #ECDBBA;
-    color: #191919;
-}
-TablesFrame
-{
-    background-color:#ECDBBA;
-    border: none;
-}

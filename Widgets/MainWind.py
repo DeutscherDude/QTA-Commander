@@ -3,7 +3,7 @@ from time import sleep
 from Layout.MasterLayout import MasterLayout
 import Shortcut_Handler as SH
 from PySide6.QtCore import QPoint, QTimer, Qt, Signal
-from PySide6.QtGui import QKeyEvent
+from PySide6.QtGui import QIcon, QKeyEvent
 from PySide6.QtWidgets import QMainWindow, QWidget
 
 # TODO: Selecting, copying, deleting, moving multiple files
@@ -19,6 +19,8 @@ class MainWind(QMainWindow):
         self.setMouseTracking(True)
 
         self.margins = 5
+        self.setWindowIcon(QIcon("QTA_Icon.png"))
+        self.setWindowTitle("QTA Commander")
         self.setContentsMargins(self.margins, self.margins, self.margins, self.margins)
         self.setGeometry(0, 0, 1240, 800)
 
@@ -37,7 +39,7 @@ class CentralWidget(QWidget):
         elif event.key() == Qt.Key.Key_F7:
             SH.create_dir_tree()
         elif event.key() == Qt.Key.Key_F8 or event.key() == Qt.Key.Key_Delete:
-            SH.delete_file()
+            SH.delete_file_tree()
         elif event.key() == Qt.Key.Key_Backspace:
             SH.return_to_previous_tree()
         elif event.key() == Qt.Key.Key_Enter or event.key() == Qt.Key.Key_Return:

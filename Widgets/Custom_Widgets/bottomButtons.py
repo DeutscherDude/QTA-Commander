@@ -11,7 +11,7 @@ class BottomButtons(QFrame):
         self.copy_butt = QPushButton("F5 Copy", clicked= Shortcut_Handler.copy_file_tree, MinimumSize= QSize(120, 40))
         self.move_butt = QPushButton("F6 Move", clicked= Shortcut_Handler.move_file_tree, MinimumSize= QSize(120, 40))
         self.fldr_butt = QPushButton("F7 NewFolder", clicked= Shortcut_Handler.create_dir_tree, MinimumSize= QSize(120, 40))
-        self.delete_butt = QPushButton("F8 Delete", clicked= Shortcut_Handler.delete_file, MinimumSize= QSize(120, 40))
+        self.delete_butt = QPushButton("F8 Delete", clicked= Shortcut_Handler.delete_file_tree, MinimumSize= QSize(120, 40))
 
         self.layout = QHBoxLayout(self)
         self.layout.addWidget(self.copy_butt)

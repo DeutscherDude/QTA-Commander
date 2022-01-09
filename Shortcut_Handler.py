@@ -53,8 +53,8 @@ def copy_file_tree(add_item = False) -> bool:
             return True
         elif file_path.is_dir():
             if add_item:
-                dest_tab = Tables.ex_tab[Tables.l_index]
-                item = QListWidgetItem(QIcon(Icons.directory), dest_path.name)
+                dest_tab = MyTreeWidget.Ex_Views[MyTreeWidget.Last_Index]
+                item = QTreeWidgetItem([file_path.name, '', '<DIR>', str(time.ctime())])
                 dest_tab.addTopLevelItem(item)
             shutil.copytree(file_path, dest_path)
             return True
@@ -89,8 +89,8 @@ def create_dir_tree(pressed = True, dir_name="New Folder") -> bool:
         print(f"Sadly, the following error occurred: {err}")
 
 def enter_return_tree() -> bool:
-    current_table = MyTreeWidget.Ex_Views[MyTreeWidget.Cur_Index]
-    current_table.enter_directory(MyTreeWidget.Ex_Views[MyTreeWidget.Cur_Index].currentItem())
+    current_table = QApplication.focusWidget()
+    current_table.enter_directory(current_table.currentItem())
     return True
 
 def return_to_previous_tree() -> bool:
@@ -99,6 +99,20 @@ def return_to_previous_tree() -> bool:
         current_table.enter_directory(QTreeWidgetItem(["...", '','','']))
     return True
 
+def delete_file_tree() -> bool:
+    """Permanently deletes a file/directory from a specified path"""
+    path = DF.cur_itm_pth_tree()
+    dlg = CustomDialog("Move file to trash bin?", "Are you sure you want to move this "
+                                                     "file/directory to trash?")
+    if dlg.exec():
+        try:
+            os.chmod(path, 777)
+            send2trash(path)
+            return True
+        except os.error as error:
+            logging.error(f"The operation failed. {error}")
+            print(f"An error occurred... {error}")
+            return False
 
 
 def copy_file() -> bool:
@@ -139,7 +153,7 @@ def copy_file() -> bool:
             return True
 
 def delete_file() -> bool:
-    """Permanently deletes a file/directory from a specified path"""
+    """Sends a specified item to trash bin"""
     path = DF.cur_itm_pth()
     dlg = CustomDialog("Move file to trash bin?", "Are you sure you want to move this "
                                                      "file/directory to trash?")

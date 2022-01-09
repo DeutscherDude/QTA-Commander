@@ -5,7 +5,7 @@ from Widgets.Custom_Widgets.bottomButtons import BottomButtons
 from Widgets.Custom_Widgets.titlebar import TitleBar
 from Widgets.Custom_Widgets.treeview import MyTreeWidget
 import Widgets.MainWind as MainWind
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QToolBar
 from Icons import icons
 from Layout.MasterLayout import MasterLayout
 
@@ -35,6 +35,7 @@ def main():
     tree2 = MyTreeWidget()
 
     layout = MasterLayout(main_win)
+    layout.add_frames_horizontally(QToolBar(main_win))
     layout.add_frames_horizontally_multiple([tree2, tree])
     layout.add_frames_vertically(buttons)
 
