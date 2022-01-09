@@ -25,9 +25,9 @@ class MyTreeWidget(QTreeWidget):
         self.cur_dir = ""
         self.widg_names = []
         
-        self.Item_Double_Clicked.connect(self.enter_directory)
+        self.itemDoubleClicked.connect(self.enter_directory)
+        self.itemClicked.connect(self._assign_indexes)
         self.setDragEnabled(True)
-        # self.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.setDragDropMode(QAbstractItemView.DragDrop)
         self.setAcceptDrops(False)
         self.setDragDropOverwriteMode(True)
@@ -71,10 +71,9 @@ class MyTreeWidget(QTreeWidget):
         self.clear()
         self.addTopLevelItems(tree_list)
 
-    def enter_directory(self):
+    def enter_directory(self, item: QTreeWidgetItem):
         self.cur_dir = pathlib.Path(self.cur_dir)
         further = True
-        item = self.itemFromIndex(self.currentIndex())
 
         if item.text(0) == "...":
             if self.cur_dir == self.cur_dir.parent:
@@ -120,6 +119,11 @@ class MyTreeWidget(QTreeWidget):
     def get_cur_path(self) -> pathlib.Path: 
         return self.cur_dir
 
+    def _assign_indexes(self) -> None:
+        if self.index != MyTreeWidget.Cur_Index:
+            MyTreeWidget.Last_Index = MyTreeWidget.Cur_Index
+            MyTreeWidget.Cur_Index = self.index
+
     def dragEnterEvent(self, event: QDragEnterEvent):
         event.acceptProposedAction()
 
@@ -155,10 +159,10 @@ class MyTreeWidget(QTreeWidget):
             MyTreeWidget.Dragged_Items = self.selectedItems()
         return super().mousePressEvent(event)
 
-    def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
-        if event.buttons() == Qt.LeftButton and type(self.itemAt(event.pos())) != NoneType:
-            self.Item_Double_Clicked.emit(event)
-            return super().mouseDoubleClickEvent(event)
+    # def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
+    #     if event.buttons() == Qt.LeftButton and type(self.itemAt(event.pos())) != NoneType:
+    #         self.Item_Double_Clicked.emit(event)
+    #         return super().mouseDoubleClickEvent(event)
 
     def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         return super().mouseReleaseEvent(event)

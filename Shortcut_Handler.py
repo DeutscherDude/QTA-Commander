@@ -17,9 +17,9 @@ level = logging.DEBUG
 FMT = '[%(levelname)s] %(asctime)s - %(message)s'
 logging.basicConfig(level=level, format=FMT)
 
+
 def copy_file_tree(add_item = False) -> bool:
     """Copies currently selected item(TreeWidget) to the previously visited directory"""
-    print("Boop")
     item = DF.fetch_dest_pths_w_items_tree()
     file_path, dest_path = item[0], item[1]
     file_inf = QFileInfo(file_path)
@@ -87,6 +87,19 @@ def create_dir_tree(pressed = True, dir_name="New Folder") -> bool:
         boy.addTopLevelItem(item)
     except OSError as err:
         print(f"Sadly, the following error occurred: {err}")
+
+def enter_return_tree() -> bool:
+    current_table = MyTreeWidget.Ex_Views[MyTreeWidget.Cur_Index]
+    current_table.enter_directory(MyTreeWidget.Ex_Views[MyTreeWidget.Cur_Index].currentItem())
+    return True
+
+def return_to_previous_tree() -> bool:
+    current_table = QApplication.focusWidget()
+    if current_table.cur_dir != pathlib.Path("\\"):
+        current_table.enter_directory(QTreeWidgetItem(["...", '','','']))
+    return True
+
+
 
 def copy_file() -> bool:
     """Copies currently selected item to the previously visited directory"""

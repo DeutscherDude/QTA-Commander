@@ -100,16 +100,16 @@ def cur_itm_pth_tree() -> pathlib.Path:
     """Fetches a current item path - QTreeWidget specific"""
     boy = MyTreeWidget.Ex_Views[MyTreeWidget.Cur_Index]
     file_path = boy.currentItem().text(0)
-    dir_path = boy.return_path().joinpath(file_path)
+    dir_path = boy.get_cur_path().joinpath(file_path)
     return dir_path
 
 def fetch_dest_pths_w_items_tree() -> tuple[pathlib.Path, pathlib.Path]:
     """Fetches a tuple with an item of QTreeWidget type"""
     try:
-        boy = MyTreeWidget.Ex_Views[MyTreeWidget.Last_Index]
+        boy = MyTreeWidget.Ex_Views[MyTreeWidget.Cur_Index]
         file_path = boy.currentItem().text(0)
         dir_path = boy.get_cur_path().joinpath(file_path)
-        des_path = MyTreeWidget.Ex_Views[MyTreeWidget.Cur_Index].get_cur_path().joinpath(file_path)
+        des_path = MyTreeWidget.Ex_Views[MyTreeWidget.Last_Index].get_cur_path().joinpath(file_path)
         return dir_path, des_path
     except EnvironmentError as err:
         print(f"The following error occurred: {err}")

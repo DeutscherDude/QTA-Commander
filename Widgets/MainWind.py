@@ -2,9 +2,8 @@ from __future__ import annotations
 from time import sleep
 from Layout.MasterLayout import MasterLayout
 import Shortcut_Handler as SH
-from Shortcut_Handler import delete_file, return_to_previous, enter_return
-from PySide6.QtCore import QPoint, QTimer, QTimerEvent, Qt, Signal
-from PySide6.QtGui import QKeyEvent, QMouseEvent
+from PySide6.QtCore import QPoint, QTimer, Qt, Signal
+from PySide6.QtGui import QKeyEvent
 from PySide6.QtWidgets import QMainWindow, QWidget
 
 # TODO: Selecting, copying, deleting, moving multiple files
@@ -38,11 +37,11 @@ class CentralWidget(QWidget):
         elif event.key() == Qt.Key.Key_F7:
             SH.create_dir_tree()
         elif event.key() == Qt.Key.Key_F8 or event.key() == Qt.Key.Key_Delete:
-            delete_file()
+            SH.delete_file()
         elif event.key() == Qt.Key.Key_Backspace:
-            return_to_previous()
+            SH.return_to_previous_tree()
         elif event.key() == Qt.Key.Key_Enter or event.key() == Qt.Key.Key_Return:
-            enter_return()
+            SH.enter_return_tree()
 
     def setUi(self, layout: MasterLayout):
         self.setLayout(layout)
