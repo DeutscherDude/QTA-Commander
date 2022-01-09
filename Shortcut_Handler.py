@@ -5,7 +5,7 @@ import shutil
 import time
 from send2trash import send2trash
 from PySide6.QtGui import QIcon, QScreen
-from PySide6.QtWidgets import QFileIconProvider, QListWidgetItem, QApplication, QTreeWidgetItem
+from PySide6.QtWidgets import QDialog, QFileIconProvider, QListWidgetItem, QApplication, QMessageBox, QTreeWidgetItem
 from PySide6.QtCore import QFileInfo, Qt
 import DataFetcher as DF
 from Icons.IconHandler import Icons

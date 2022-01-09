@@ -5,7 +5,7 @@ QWidget
     border-radius: 4px;
     padding: 2px;
 }
-QLabel#app_title 
+QLabel 
 {
     color: #ECDBBA;
     font: 20px Roboto;
@@ -149,4 +149,9 @@ QHeaderView#header
     border-color:#ECDBBA;
     color: red;
     font: 12px;
+}
+QMessageBox
+{
+    border: 2px;
+    background-color: grey;
 }
