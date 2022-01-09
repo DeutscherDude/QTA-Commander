@@ -17,7 +17,6 @@ level = logging.DEBUG
 FMT = '[%(levelname)s] %(asctime)s - %(message)s'
 logging.basicConfig(level=level, format=FMT)
 
-
 def copy_file_tree(add_item = False) -> bool:
     """Copies currently selected item(TreeWidget) to the previously visited directory"""
     item = DF.fetch_dest_pths_w_items_tree()
@@ -76,7 +75,6 @@ def move_file_tree() -> bool:
 
 def create_dir_tree(pressed = True, dir_name="New Folder") -> bool:
     """Creates a new directory called New Folder"""
-    # TODO: Add functionality to input your own name for the folder. Default: "New Folder"
     path = MyTreeWidget.Ex_Views[MyTreeWidget.Cur_Index].get_cur_path()
     path = path.joinpath(dir_name)
     try:

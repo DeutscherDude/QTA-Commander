@@ -9,10 +9,6 @@ from PySide6.QtWidgets import QApplication, QToolBar
 from Icons import icons
 from Layout.MasterLayout import MasterLayout
 
-# sqlalchemy
-# TODO: Add capabilities for changing color scheme using QSS 
-# TODO: Create a menu bar with settings
-
 def main():
     system = platform.system()
     home = ''

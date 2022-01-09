@@ -1,5 +1,5 @@
 from PySide6.QtCore import Signal
-from PySide6.QtWidgets import QDialog, QDialogButtonBox, QMessageBox, QTreeWidgetItem, QVBoxLayout, QLabel
+from PySide6.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel
 from PySide6.QtGui import QIcon, QPixmap
 import Icons.IconHandler as IconHandler
 

@@ -1,13 +1,11 @@
 import pathlib
 import os
-from types import NoneType
 from typing import List
 from PySide6.QtGui import QDragEnterEvent, QDropEvent, QIcon, QMouseEvent
 from PySide6.QtCore import QDir, QDirIterator,QFileInfo, Qt, Signal
 from PySide6.QtWidgets import QAbstractItemView, QFileIconProvider, QHeaderView,QTreeWidget, QTreeWidgetItem
 from Icons.IconHandler import Icons
 import Shortcut_Handler
-from Widgets.Custom_Widgets.dialog_box import CustomDialog
 
 
 class MyTreeWidget(QTreeWidget):
